@@ -77,34 +77,34 @@ export default function Flashcard({
 
       {/* Main flashcard */}
       <div
-        className={`flip-card ${isFlipped ? 'flipped' : ''} cursor-pointer`}
+        className={`flip-card ${isFlipped ? 'flipped' : ''} cursor-pointer h-80 md:h-96`}
         onClick={handleFlip}
         onKeyDown={handleKeyDown}
         tabIndex={0}
         role="button"
         aria-label="Flip card"
       >
-        <div className="flip-card-inner h-80 md:h-96">
+        <div className="flip-card-inner w-full h-full">
           {/* Front */}
-          <div className="flip-card-front bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-8 flex items-center justify-center border-2 border-gray-200 dark:border-gray-700">
-            <div className="text-center">
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">
+          <div className="flip-card-front bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-6 md:p-8 border-2 border-gray-200 dark:border-gray-700 overflow-y-auto">
+            <div className="h-full flex flex-col items-center justify-center text-center">
+              <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-4">
                 {card.front}
               </h2>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-8">
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-auto">
                 Click or press Space to flip
               </p>
             </div>
           </div>
 
           {/* Back */}
-          <div className="flip-card-back bg-gradient-to-br from-aws-light-blue to-aws-dark-blue rounded-xl shadow-2xl p-8 flex items-center justify-center">
-            <div className="text-center">
-              <div className="text-white whitespace-pre-line text-base md:text-lg leading-relaxed">
+          <div className="flip-card-back bg-gradient-to-br from-aws-light-blue to-aws-dark-blue rounded-xl shadow-2xl p-6 md:p-8 overflow-y-auto">
+            <div className="h-full flex flex-col items-center justify-center text-center">
+              <div className="text-white whitespace-pre-line text-sm md:text-base leading-relaxed max-w-full">
                 {card.back}
               </div>
               {card.relatedServices && card.relatedServices.length > 0 && (
-                <div className="mt-6 pt-6 border-t border-white/20">
+                <div className="mt-4 pt-4 border-t border-white/20 w-full">
                   <p className="text-sm text-white/80 mb-2">Related Services:</p>
                   <div className="flex flex-wrap gap-2 justify-center">
                     {card.relatedServices.map(service => (
