@@ -398,6 +398,310 @@ export const quizQuestions: QuizQuestion[] = [
     explanation: "S3 Intelligent-Tiering automatically moves objects between frequent and infrequent access tiers based on access patterns, with no retrieval fees. Other classes require manual lifecycle policies to change tiers.",
     difficulty: "easy",
     references: ["https://aws.amazon.com/s3/storage-classes/intelligent-tiering/"]
+  },
+
+  // Additional questions from reference materials
+
+  // Auto Scaling & High Availability
+  {
+    id: "q-compute-3",
+    domain: "Compute",
+    week: 5,
+    question: "A company needs to automatically scale EC2 instances based on CPU utilization and maintain a target average CPU of 50%. Which Auto Scaling policy type should they use?",
+    options: [
+      "Simple scaling policy",
+      "Step scaling policy",
+      "Target tracking scaling policy",
+      "Scheduled scaling policy"
+    ],
+    correctAnswer: 2,
+    explanation: "Target tracking scaling policy is correct. It maintains a specified target metric value (like 50% CPU). The Auto Scaling group automatically adjusts capacity to maintain the target. Simple scaling is basic (deprecated), step scaling uses steps/thresholds, and scheduled is for predictable changes.",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scaling-target-tracking.html"]
+  },
+  {
+    id: "q-compute-4",
+    domain: "Compute",
+    week: 5,
+    question: "What is the PRIMARY advantage of using Launch Templates over Launch Configurations for Auto Scaling groups?",
+    options: [
+      "Launch Templates are free while Launch Configurations cost money",
+      "Launch Templates support versioning while Launch Configurations do not",
+      "Launch Templates can launch instances while Launch Configurations cannot",
+      "Launch Templates work with VPCs while Launch Configurations do not"
+    ],
+    correctAnswer: 1,
+    explanation: "Launch Templates support versioning, allowing you to make changes and track different versions. Launch Configurations are deprecated and require creating entirely new configurations for any change. Both are free, both can launch instances, and both work with VPCs. Always use Launch Templates.",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/autoscaling/ec2/userguide/launch-templates.html"]
+  },
+  {
+    id: "q-compute-5",
+    domain: "Compute",
+    week: 5,
+    question: "An Auto Scaling group is configured with Minimum: 2, Desired: 4, Maximum: 10. An engineer manually terminates 2 instances. What will happen?",
+    options: [
+      "The Auto Scaling group will launch 2 new instances immediately",
+      "The Auto Scaling group will maintain 2 instances (the minimum)",
+      "The instances will not be replaced until a scaling policy triggers",
+      "The Auto Scaling group will be deleted due to insufficient capacity"
+    ],
+    correctAnswer: 0,
+    explanation: "The Auto Scaling group will immediately launch 2 new instances to maintain the desired capacity of 4. Auto Scaling groups have self-healing capabilities and will automatically replace terminated instances to match the desired capacity, as long as it's within the min/max bounds.",
+    difficulty: "hard",
+    references: ["https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-health-checks.html"]
+  },
+
+  // Storage Gateway
+  {
+    id: "q-storage-3",
+    domain: "Storage",
+    week: 3,
+    question: "A company wants to replace their physical tape backup system with a cloud-based solution while maintaining their existing tape-based backup workflows. Which AWS service should they use?",
+    options: [
+      "AWS Storage Gateway - File Gateway",
+      "AWS Storage Gateway - Tape Gateway",
+      "AWS Storage Gateway - Volume Gateway",
+      "AWS Backup"
+    ],
+    correctAnswer: 1,
+    explanation: "Tape Gateway is specifically designed to replace physical tape backups with cloud storage. It provides a Virtual Tape Library (VTL) interface and stores data in S3 Glacier. File Gateway is for NFS/SMB file shares, Volume Gateway is for block storage, and AWS Backup is for different backup scenarios.",
+    difficulty: "easy",
+    references: ["https://aws.amazon.com/storagegateway/"]
+  },
+  {
+    id: "q-storage-4",
+    domain: "Storage",
+    week: 3,
+    question: "Which AWS Storage Gateway type uses iSCSI protocol and provides block storage volumes?",
+    options: [
+      "File Gateway",
+      "Tape Gateway",
+      "Volume Gateway",
+      "FSx Gateway"
+    ],
+    correctAnswer: 2,
+    explanation: "Volume Gateway uses iSCSI protocol to present block storage volumes (cached or stored modes). File Gateway uses NFS/SMB for file storage, Tape Gateway uses iSCSI for virtual tape libraries, and FSx Gateway is for Amazon FSx for Windows File Server access.",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/storagegateway/latest/vgw/"]
+  },
+  {
+    id: "q-migration-4",
+    domain: "Migration",
+    week: 3,
+    question: "What is the PRIMARY difference between AWS DataSync and AWS Storage Gateway?",
+    options: [
+      "DataSync is for one-time/scheduled data transfers, Storage Gateway is for ongoing hybrid storage with local caching",
+      "DataSync is for databases, Storage Gateway is for files",
+      "DataSync requires agents, Storage Gateway does not",
+      "DataSync is free, Storage Gateway costs money"
+    ],
+    correctAnswer: 0,
+    explanation: "DataSync is designed for data migration and synchronization (one-time or scheduled transfers) between on-premises and AWS. Storage Gateway provides ongoing hybrid cloud storage with local caching for low-latency access. Both can use agents, both cost money, and both handle files/data.",
+    difficulty: "hard",
+    references: ["https://aws.amazon.com/datasync/", "https://aws.amazon.com/storagegateway/"]
+  },
+  {
+    id: "q-migration-5",
+    domain: "Migration",
+    week: 3,
+    question: "A company needs to transfer 500 TB of data from on-premises NFS storage to S3 and verify data integrity after transfer. Which service is MOST appropriate?",
+    options: [
+      "AWS DataSync",
+      "AWS Storage Gateway - File Gateway",
+      "AWS Snowball Edge",
+      "S3 Transfer Acceleration"
+    ],
+    correctAnswer: 0,
+    explanation: "DataSync is perfect for large data transfers from NFS to S3 and includes built-in data integrity verification. It's 10x faster than open-source tools and can schedule transfers. Storage Gateway is for ongoing hybrid storage (not migration), Snowball is for offline transfers, Transfer Acceleration doesn't solve bandwidth limitations or provide verification.",
+    difficulty: "medium",
+    references: ["https://aws.amazon.com/datasync/"]
+  },
+
+  // IAM Deep Dive
+  {
+    id: "q-security-3",
+    domain: "Security",
+    week: 1,
+    question: "What is the difference between an IAM identity-based policy and a resource-based policy?",
+    options: [
+      "Identity-based policies are attached to users/groups/roles, resource-based policies are attached to AWS resources like S3 buckets",
+      "Identity-based policies are JSON, resource-based policies are XML",
+      "Identity-based policies cost money, resource-based policies are free",
+      "Identity-based policies are for AWS services, resource-based policies are for users"
+    ],
+    correctAnswer: 0,
+    explanation: "Identity-based policies attach to IAM identities (users, groups, roles) to define what they can do. Resource-based policies attach to AWS resources (S3 buckets, KMS keys) to define who can access them. Both use JSON, both are free, and both work with services and users.",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html"]
+  },
+  {
+    id: "q-security-4",
+    domain: "Security",
+    week: 1,
+    question: "Which of the following are AWS IAM best practices? (Select TWO)",
+    options: [
+      "Enable MFA for the root user account",
+      "Create access keys for the root user for programmatic access",
+      "Use IAM roles for EC2 instances instead of embedding access keys",
+      "Share IAM credentials between multiple developers",
+      "Disable MFA to simplify login process"
+    ],
+    correctAnswer: [0, 2],
+    multiSelect: true,
+    explanation: "ALWAYS enable MFA for root user and use IAM roles for EC2 (never embed access keys in code). NEVER create access keys for root user, NEVER share credentials, and NEVER disable MFA - these are security risks. Follow least privilege and use roles whenever possible.",
+    difficulty: "easy",
+    references: ["https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html"]
+  },
+  {
+    id: "q-security-5",
+    domain: "Security",
+    week: 1,
+    question: "In IAM, if a permission is not explicitly allowed in a policy, what is the default behavior?",
+    options: [
+      "The permission is allowed by default",
+      "The permission is implicitly denied",
+      "The permission requires manual approval",
+      "The permission is logged but allowed"
+    ],
+    correctAnswer: 1,
+    explanation: "In AWS IAM, permissions are IMPLICITLY DENIED by default. If you don't explicitly allow an action, it is denied. This is the principle of least privilege - you must explicitly grant permissions. An explicit DENY always wins over any ALLOW.",
+    difficulty: "easy",
+    references: ["https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html"]
+  },
+
+  // VPC & Networking
+  {
+    id: "q-networking-1",
+    domain: "Networking",
+    week: 1,
+    question: "What is the PRIMARY difference between Network ACLs and Security Groups?",
+    options: [
+      "NACLs are stateful, Security Groups are stateless",
+      "NACLs are stateless, Security Groups are stateful",
+      "NACLs operate at the instance level, Security Groups at the subnet level",
+      "NACLs only allow rules, Security Groups allow allow and deny rules"
+    ],
+    correctAnswer: 1,
+    explanation: "NACLs are STATELESS (return traffic must be explicitly allowed) and operate at subnet level with allow/deny rules. Security Groups are STATEFUL (return traffic auto-allowed), operate at instance level, and only have allow rules. This is a critical exam distinction!",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html"]
+  },
+  {
+    id: "q-networking-2",
+    domain: "Networking",
+    week: 1,
+    question: "A company needs to provide internet access to EC2 instances in private subnets. Which component should they use?",
+    options: [
+      "Internet Gateway (IGW)",
+      "NAT Gateway",
+      "Virtual Private Gateway (VGW)",
+      "VPC Peering"
+    ],
+    correctAnswer: 1,
+    explanation: "NAT Gateway allows instances in PRIVATE subnets to access the internet for outbound traffic (updates, downloads) while preventing inbound internet access. IGW is for public subnets, VGW is for VPN connections, and VPC Peering connects VPCs together.",
+    difficulty: "easy",
+    references: ["https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html"]
+  },
+  {
+    id: "q-networking-3",
+    domain: "Networking",
+    week: 1,
+    question: "Which load balancer type operates at Layer 7 and supports path-based routing?",
+    options: [
+      "Classic Load Balancer (CLB)",
+      "Network Load Balancer (NLB)",
+      "Application Load Balancer (ALB)",
+      "Gateway Load Balancer (GLB)"
+    ],
+    correctAnswer: 2,
+    explanation: "Application Load Balancer (ALB) operates at Layer 7 (HTTP/HTTPS) and supports path-based routing, host-based routing, and HTTP headers. NLB is Layer 4 (TCP/UDP) for extreme performance, GLB is Layer 3 for third-party appliances, and CLB is legacy (avoid).",
+    difficulty: "easy",
+    references: ["https://aws.amazon.com/elasticloadbalancing/"]
+  },
+
+  // Database Deep Dive
+  {
+    id: "q-database-5",
+    domain: "Database",
+    week: 4,
+    question: "An Aurora database cluster has 1 primary instance and 3 read replicas. What is the maximum number of read replicas supported?",
+    options: [
+      "5 read replicas",
+      "10 read replicas",
+      "15 read replicas",
+      "Unlimited read replicas"
+    ],
+    correctAnswer: 2,
+    explanation: "Aurora supports up to 15 read replicas per cluster. This is more than standard RDS (which supports 5 read replicas). Aurora replicas support automatic failover and are highly performant with sub-10ms replication lag.",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/"]
+  },
+  {
+    id: "q-database-6",
+    domain: "Database",
+    week: 4,
+    question: "A company needs a graph database for fraud detection in their social network application. Which AWS database service should they use?",
+    options: [
+      "Amazon DynamoDB",
+      "Amazon Neptune",
+      "Amazon DocumentDB",
+      "Amazon RDS"
+    ],
+    correctAnswer: 1,
+    explanation: "Amazon Neptune is AWS's graph database service, designed for highly connected datasets like social networks, fraud detection, and recommendation engines. DynamoDB is NoSQL key-value, DocumentDB is MongoDB-compatible, and RDS is relational.",
+    difficulty: "easy",
+    references: ["https://aws.amazon.com/neptune/"]
+  },
+  {
+    id: "q-database-7",
+    domain: "Database",
+    week: 4,
+    question: "What feature of Amazon DynamoDB Accelerator (DAX) makes it different from ElastiCache?",
+    options: [
+      "DAX is specifically designed for DynamoDB with microsecond latency, ElastiCache is a general caching service",
+      "DAX is free, ElastiCache costs money",
+      "DAX only works with Redis, ElastiCache works with Memcached",
+      "DAX is for databases, ElastiCache is for web applications only"
+    ],
+    correctAnswer: 0,
+    explanation: "DAX is a fully managed, in-memory cache specifically for DynamoDB that provides microsecond response times. ElastiCache is a general-purpose caching service (Redis/Memcached) that works with any application. DAX requires no application code changes for DynamoDB.",
+    difficulty: "medium",
+    references: ["https://aws.amazon.com/dynamodb/dax/"]
+  },
+
+  // Advanced Storage
+  {
+    id: "q-storage-5",
+    domain: "Storage",
+    week: 6,
+    question: "Which S3 storage class provides automatic cost optimization by moving objects between access tiers without retrieval fees?",
+    options: [
+      "S3 Standard",
+      "S3 Standard-IA",
+      "S3 Intelligent-Tiering",
+      "S3 One Zone-IA"
+    ],
+    correctAnswer: 2,
+    explanation: "S3 Intelligent-Tiering automatically moves objects between frequent and infrequent access tiers based on access patterns with NO retrieval fees and a small monthly monitoring fee. Other classes require manual lifecycle policies and may have retrieval fees.",
+    difficulty: "easy",
+    references: ["https://aws.amazon.com/s3/storage-classes/intelligent-tiering/"]
+  },
+  {
+    id: "q-storage-6",
+    domain: "Storage",
+    week: 6,
+    question: "A company needs shared file storage accessible from multiple Linux EC2 instances across multiple Availability Zones. Which service should they use?",
+    options: [
+      "Amazon EBS",
+      "Amazon EFS",
+      "Amazon S3",
+      "Instance Store"
+    ],
+    correctAnswer: 1,
+    explanation: "Amazon EFS (Elastic File System) provides shared NFS file storage that can be mounted by multiple EC2 instances across multiple AZs simultaneously. EBS is single-instance block storage, S3 is object storage (not a file system), and Instance Store is ephemeral and instance-specific.",
+    difficulty: "medium",
+    references: ["https://aws.amazon.com/efs/"]
   }
 ];
 
