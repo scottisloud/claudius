@@ -8,7 +8,7 @@ import { quizQuestions, quizDomains, getQuestionsByDomain, QuizQuestion, QuizAtt
 
 export default function QuizzesPage() {
   const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
-  const [quizQuestions, setQuizQuestions] = useState<QuizQuestion[]>([]);
+  const [selectedQuestions, setSelectedQuestions] = useState<QuizQuestion[]>([]);
   const [quizStarted, setQuizStarted] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [quizResults, setQuizResults] = useState<{
@@ -21,7 +21,7 @@ export default function QuizzesPage() {
       ? [...quizQuestions].sort(() => Math.random() - 0.5) // Shuffle all questions
       : getQuestionsByDomain(domain);
 
-    setQuizQuestions(questions);
+    setSelectedQuestions(questions);
     setSelectedDomain(domain);
     setQuizStarted(true);
     setQuizCompleted(false);
@@ -55,7 +55,7 @@ export default function QuizzesPage() {
     return (
       <div className="py-8">
         <Quiz
-          questions={quizQuestions}
+          questions={selectedQuestions}
           onComplete={handleQuizComplete}
           domain={selectedDomain || undefined}
         />
@@ -67,7 +67,7 @@ export default function QuizzesPage() {
     return (
       <div className="py-8">
         <QuizResults
-          questions={quizQuestions}
+          questions={selectedQuestions}
           attempts={quizResults.attempts}
           timeSpent={quizResults.timeSpent}
           domain={selectedDomain || undefined}
