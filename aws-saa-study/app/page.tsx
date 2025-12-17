@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { flashcards, categories } from '@/data/flashcards';
+import { quizQuestions } from '@/data/quizzes';
 
 export default function Home() {
   return (
@@ -19,7 +20,7 @@ export default function Home() {
       </div>
 
       {/* Stats cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center">
           <div className="text-4xl font-bold text-aws-orange mb-2">
             {flashcards.length}
@@ -30,6 +31,14 @@ export default function Home() {
         </div>
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center">
           <div className="text-4xl font-bold text-aws-light-blue mb-2">
+            {quizQuestions.length}
+          </div>
+          <div className="text-gray-600 dark:text-gray-400">
+            Quiz Questions
+          </div>
+        </div>
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center">
+          <div className="text-4xl font-bold text-purple-600 mb-2">
             {categories.length}
           </div>
           <div className="text-gray-600 dark:text-gray-400">
@@ -60,15 +69,17 @@ export default function Home() {
           </div>
         </Link>
 
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 border-2 border-gray-200 dark:border-gray-700">
-          <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-white">📝 Coming Soon</h3>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
-            Practice quizzes, progress tracking, and the full 8-week study guide are on the way!
-          </p>
-          <div className="text-gray-400">
-            Stay tuned...
+        <Link href="/quizzes" className="block group">
+          <div className="bg-gradient-to-br from-aws-orange to-orange-600 rounded-xl shadow-lg p-8 text-white hover:shadow-2xl transition-all transform hover:-translate-y-1">
+            <h3 className="text-2xl font-bold mb-3">🎯 Practice Quizzes</h3>
+            <p className="text-white/80 mb-4">
+              Test your knowledge with {quizQuestions.length}+ scenario-based questions that mirror the actual SAA-C03 exam format.
+            </p>
+            <div className="flex items-center text-white group-hover:text-yellow-200 transition-colors">
+              Take a Quiz →
+            </div>
           </div>
-        </div>
+        </Link>
       </div>
 
       {/* Categories overview */}

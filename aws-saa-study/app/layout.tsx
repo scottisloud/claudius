@@ -30,6 +30,9 @@ export default function RootLayout({
                   <Link href="/flashcards" className="hover:text-aws-orange transition-colors">
                     Flashcards
                   </Link>
+                  <Link href="/quizzes" className="hover:text-aws-orange transition-colors">
+                    Quizzes
+                  </Link>
                   <Link href="/about" className="hover:text-aws-orange transition-colors">
                     About
                   </Link>
