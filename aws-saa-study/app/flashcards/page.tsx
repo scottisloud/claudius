@@ -130,7 +130,7 @@ function FlashcardsContent() {
           <h3 className="font-semibold text-gray-700 dark:text-gray-300 mb-3">
             Quick Jump
           </h3>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 justify-center">
             {displayCards.map((_, index) => (
               <button
                 key={index}

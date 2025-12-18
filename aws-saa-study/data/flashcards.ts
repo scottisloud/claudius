@@ -472,6 +472,222 @@ export const flashcards: Flashcard[] = [
     back: "• Use Intelligent-Tiering for unknown patterns\n• Lifecycle policies for predictable transitions\n• Delete incomplete multipart uploads\n• Use S3 Select (query in place)\n• Glacier for archival\n• Monitor with S3 Storage Lens",
     tags: ["cost", "s3", "storage"],
     relatedServices: ["S3"]
+  },
+
+  // CloudWatch & Monitoring
+  {
+    id: "fc-monitoring-cloudwatch-logs",
+    category: "Monitoring",
+    front: "CloudWatch Logs - Key Features",
+    back: "Centralized log management\n• Log Groups: Collection of log streams\n• Log Streams: Sequence of log events\n• Retention: 1 day to 10 years (custom)\n• Export to S3, stream to Lambda/Kinesis\n• Insights: Query and analyze logs",
+    tags: ["monitoring", "cloudwatch", "logs"],
+    relatedServices: ["Lambda", "EC2", "CloudTrail"]
+  },
+  {
+    id: "fc-monitoring-cloudwatch-metrics",
+    category: "Monitoring",
+    front: "CloudWatch Metrics & Alarms",
+    back: "Default: 5-minute intervals (free)\n• Detailed: 1-minute intervals (paid)\n• Custom Metrics: Your own data\n• Alarms: 3 states (OK, ALARM, INSUFFICIENT_DATA)\n• Actions: SNS, Auto Scaling, EC2 actions\n• Composite alarms: Multiple alarm conditions",
+    tags: ["monitoring", "cloudwatch", "metrics", "alarms"],
+    relatedServices: ["SNS", "Auto Scaling", "EC2"]
+  },
+  {
+    id: "fc-monitoring-cloudwatch-insights",
+    category: "Monitoring",
+    front: "CloudWatch Insights Types",
+    back: "Logs Insights: SQL-like query for logs\n• Container Insights: ECS, EKS, K8s metrics\n• Lambda Insights: Lambda performance\n• Application Insights: Auto dashboard for apps\n• Use: Troubleshooting, performance analysis",
+    tags: ["monitoring", "cloudwatch", "insights"],
+    relatedServices: ["Lambda", "ECS", "EKS"]
+  },
+  {
+    id: "fc-monitoring-cloudtrail",
+    category: "Monitoring",
+    front: "AWS CloudTrail - Purpose",
+    back: "Governance, compliance, audit logging\n• Records AWS API calls\n• Events: Management, Data, Insights\n• 90-day history free\n• Trail: Deliver to S3, CloudWatch Logs\n• Use: Security analysis, compliance, troubleshooting",
+    tags: ["monitoring", "cloudtrail", "audit", "compliance"],
+    relatedServices: ["S3", "CloudWatch Logs"]
+  },
+  {
+    id: "fc-monitoring-aws-config",
+    category: "Monitoring",
+    front: "AWS Config - Compliance Tracking",
+    back: "Resource inventory and configuration history\n• Config Rules: Evaluate compliance\n• Remediation: Auto-fix non-compliant\n• Aggregator: Multi-account/region view\n• Use: Compliance auditing, change tracking",
+    tags: ["monitoring", "config", "compliance"],
+    relatedServices: ["CloudTrail", "Lambda"]
+  },
+
+  // Advanced VPC & Networking
+  {
+    id: "fc-network-vpc-endpoints",
+    category: "Networking",
+    front: "VPC Endpoints - Types",
+    back: "Private AWS service access (no IGW needed)\n• Gateway Endpoints: S3, DynamoDB (route table)\n• Interface Endpoints: Most services (ENI + DNS)\n• Gateway Load Balancer Endpoints: Third-party appliances\n• Use: Security, reduced data transfer costs",
+    tags: ["networking", "vpc", "endpoints", "privatelink"],
+    relatedServices: ["S3", "DynamoDB", "PrivateLink"]
+  },
+  {
+    id: "fc-network-privatelink",
+    category: "Networking",
+    front: "AWS PrivateLink",
+    back: "Private connectivity to services\n• Expose your service to other VPCs\n• No VPC peering/NAT/IGW needed\n• Service Provider → Service Consumer\n• Uses Interface VPC Endpoints\n• Use: SaaS applications, shared services",
+    tags: ["networking", "privatelink", "vpc"],
+    relatedServices: ["VPC Endpoints", "NLB"]
+  },
+  {
+    id: "fc-network-transit-gateway",
+    category: "Networking",
+    front: "AWS Transit Gateway",
+    back: "Central hub for VPC connectivity\n• Connects thousands of VPCs + on-premises\n• Replaces complex VPC peering\n• Route Tables: Control traffic flow\n• Cross-region peering supported\n• Use: Simplify network topology",
+    tags: ["networking", "transit-gateway", "vpc", "hybrid"],
+    relatedServices: ["VPC", "Direct Connect", "VPN"]
+  },
+  {
+    id: "fc-network-vpc-flow-logs",
+    category: "Networking",
+    front: "VPC Flow Logs",
+    back: "Capture IP traffic information\n• Levels: VPC, Subnet, or ENI\n• Publish to: CloudWatch Logs or S3\n• Use: Troubleshooting, security analysis\n• Cannot enable for peered VPCs (unless same account)\n• Not real-time (delayed)",
+    tags: ["networking", "vpc", "flow-logs", "monitoring"],
+    relatedServices: ["CloudWatch", "S3"]
+  },
+
+  // Advanced S3 Features
+  {
+    id: "fc-storage-s3-versioning",
+    category: "Storage",
+    front: "S3 Versioning & MFA Delete",
+    back: "Versioning: Keep all versions of objects\n• Once enabled, can only suspend (not disable)\n• Deletes create delete marker (recoverable)\n• MFA Delete: Requires MFA to delete versions\n• Use: Protect from accidental deletion, compliance",
+    tags: ["storage", "s3", "versioning", "security"],
+    relatedServices: ["S3"]
+  },
+  {
+    id: "fc-storage-s3-replication",
+    category: "Storage",
+    front: "S3 Replication - CRR vs SRR",
+    back: "Cross-Region Replication (CRR):\n• Compliance, lower latency, disaster recovery\n\nSame-Region Replication (SRR):\n• Log aggregation, prod/test sync\n\nBoth:\n• Versioning required\n• Async replication\n• Can change storage class",
+    tags: ["storage", "s3", "replication", "disaster-recovery"],
+    relatedServices: ["S3"]
+  },
+  {
+    id: "fc-storage-s3-encryption",
+    category: "Storage",
+    front: "S3 Encryption Options",
+    back: "Server-Side:\n• SSE-S3: AWS managed keys (default)\n• SSE-KMS: AWS KMS keys (audit trail)\n• SSE-C: Customer-provided keys\n\nClient-Side:\n• Encrypt before upload\n\nTransit: HTTPS/TLS\nBucket policies can enforce encryption",
+    tags: ["storage", "s3", "encryption", "security"],
+    relatedServices: ["KMS"]
+  },
+  {
+    id: "fc-storage-s3-lifecycle",
+    category: "Storage",
+    front: "S3 Lifecycle Policies",
+    back: "Automate storage class transitions\n• Transition actions: Move to cheaper classes\n• Expiration actions: Delete old versions\n• Rules: Prefix or tag-based\n• Example: After 30 days → IA, after 90 → Glacier\n• Use: Cost optimization, compliance",
+    tags: ["storage", "s3", "lifecycle", "cost-optimization"],
+    relatedServices: ["S3"]
+  },
+
+  // Advanced Lambda Features
+  {
+    id: "fc-compute-lambda-concurrency",
+    category: "Compute",
+    front: "Lambda Concurrency Limits",
+    back: "Default: 1000 concurrent executions per region\n• Reserved Concurrency: Guarantee for function\n• Provisioned Concurrency: Pre-warmed instances\n• Throttling: 429 error if limit exceeded\n• Use reserved to prevent one function consuming all",
+    tags: ["compute", "lambda", "serverless", "concurrency"],
+    relatedServices: ["Lambda"]
+  },
+  {
+    id: "fc-compute-lambda-layers",
+    category: "Compute",
+    front: "Lambda Layers",
+    back: "Reusable code/dependencies\n• Up to 5 layers per function\n• Share across functions\n• Reduces deployment package size\n• Use: Common libraries, custom runtimes\n• Can be shared cross-account",
+    tags: ["compute", "lambda", "serverless", "layers"],
+    relatedServices: ["Lambda"]
+  },
+  {
+    id: "fc-compute-lambda-edge",
+    category: "Compute",
+    front: "Lambda@Edge vs CloudFront Functions",
+    back: "Lambda@Edge:\n• Node.js/Python, more compute, ms latency\n• CloudFront events, network access\n\nCloudFront Functions:\n• JavaScript, lightweight, sub-ms latency\n• Viewer request/response only\n\nBoth: Run at edge locations",
+    tags: ["compute", "lambda", "cloudfront", "edge"],
+    relatedServices: ["CloudFront"]
+  },
+
+  // CloudFront & Content Delivery
+  {
+    id: "fc-network-cloudfront",
+    category: "Networking",
+    front: "Amazon CloudFront - Key Features",
+    back: "Global CDN - 400+ edge locations\n• Origins: S3, ALB, EC2, custom HTTP\n• OAI: Origin Access Identity for S3\n• Cache behaviors: Path pattern routing\n• Signed URLs/Cookies: Restrict access\n• Use: Low latency, DDoS protection",
+    tags: ["networking", "cloudfront", "cdn", "content-delivery"],
+    relatedServices: ["S3", "ALB", "Shield"]
+  },
+  {
+    id: "fc-network-global-accelerator",
+    category: "Networking",
+    front: "AWS Global Accelerator",
+    back: "Improve global application performance\n• 2 static Anycast IPs\n• Traffic to nearest edge, then AWS backbone\n• Health checks + failover\n• vs CloudFront: TCP/UDP (not HTTP), no caching\n• Use: Non-HTTP protocols, static IPs needed",
+    tags: ["networking", "global-accelerator", "performance"],
+    relatedServices: ["CloudFront", "ELB"]
+  },
+
+  // Security Services
+  {
+    id: "fc-security-guardduty",
+    category: "Security",
+    front: "Amazon GuardDuty",
+    back: "Intelligent threat detection\n• Analyzes: CloudTrail, VPC Flow Logs, DNS logs\n• Machine learning\n• Findings: Account compromise, instance compromise\n• No agents required\n• Use: Continuous security monitoring",
+    tags: ["security", "guardduty", "threat-detection"],
+    relatedServices: ["CloudTrail", "VPC Flow Logs"]
+  },
+  {
+    id: "fc-security-inspector",
+    category: "Security",
+    front: "Amazon Inspector",
+    back: "Automated security assessment\n• EC2: Agent-based, vulnerabilities, best practices\n• ECR: Container image scanning\n• Lambda: Code and dependencies\n• Findings: Risk score + remediation\n• Use: Compliance, vulnerability management",
+    tags: ["security", "inspector", "vulnerability"],
+    relatedServices: ["EC2", "ECR", "Lambda"]
+  },
+  {
+    id: "fc-security-acm",
+    category: "Security",
+    front: "AWS Certificate Manager (ACM)",
+    back: "Provision, manage TLS/SSL certificates\n• Free public certificates\n• Auto-renewal\n• Integrates: ELB, CloudFront, API Gateway\n• Private CA available (paid)\n• Use: HTTPS for websites/APIs",
+    tags: ["security", "acm", "certificates", "tls"],
+    relatedServices: ["ELB", "CloudFront", "API Gateway"]
+  },
+  {
+    id: "fc-security-systems-manager",
+    category: "Security",
+    front: "AWS Systems Manager",
+    back: "Operational management tool\n• Session Manager: SSH without keys\n• Patch Manager: Automate patching\n• Parameter Store: Config/secrets storage\n• Run Command: Execute commands at scale\n• Automation: Runbooks\n• Use: Centralized operations",
+    tags: ["security", "systems-manager", "operations"],
+    relatedServices: ["EC2", "Parameter Store"]
+  },
+
+  // Disaster Recovery
+  {
+    id: "fc-dr-strategies",
+    category: "Disaster Recovery",
+    front: "Disaster Recovery Strategies",
+    back: "Order by RPO/RTO (fastest to slowest):\n1. Multi-Site/Hot Site: Active-active (lowest RTO)\n2. Warm Standby: Scaled-down active system\n3. Pilot Light: Minimal critical core\n4. Backup & Restore: Cheapest (highest RTO)\n\nRPO: Recovery Point Objective (data loss)\nRTO: Recovery Time Objective (downtime)",
+    tags: ["disaster-recovery", "rpo", "rto", "availability"],
+    relatedServices: ["Backup", "S3"]
+  },
+  {
+    id: "fc-dr-aws-backup",
+    category: "Disaster Recovery",
+    front: "AWS Backup",
+    back: "Centralized backup management\n• Backup Plans: Schedule, retention, lifecycle\n• Supports: EBS, RDS, Aurora, DynamoDB, EFS, FSx, more\n• Cross-region backup copy\n• Backup Vault Lock: WORM protection\n• Use: Compliance, centralized backup policy",
+    tags: ["disaster-recovery", "backup", "compliance"],
+    relatedServices: ["EBS", "RDS", "S3"]
+  },
+
+  // Organizations & Governance
+  {
+    id: "fc-security-organizations",
+    category: "Security",
+    front: "AWS Organizations & SCPs",
+    back: "Multi-account management\n• Organizational Units (OUs): Group accounts\n• Service Control Policies (SCPs): Permission boundaries\n• Consolidated billing\n• SCPs: Only restrict, never grant permissions\n• Use: Centralized governance, cost management",
+    tags: ["security", "organizations", "governance", "scp"],
+    relatedServices: ["IAM", "Control Tower"]
   }
 ];
 
