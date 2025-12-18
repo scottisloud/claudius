@@ -702,6 +702,394 @@ export const quizQuestions: QuizQuestion[] = [
     explanation: "Amazon EFS (Elastic File System) provides shared NFS file storage that can be mounted by multiple EC2 instances across multiple AZs simultaneously. EBS is single-instance block storage, S3 is object storage (not a file system), and Instance Store is ephemeral and instance-specific.",
     difficulty: "medium",
     references: ["https://aws.amazon.com/efs/"]
+  },
+
+  // CloudWatch & Monitoring Questions
+  {
+    id: "q-monitoring-1",
+    domain: "Monitoring",
+    week: 2,
+    question: "A company wants to be alerted when their application's average CPU utilization exceeds 80% for 5 consecutive minutes. Which AWS service should they use?",
+    options: [
+      "AWS CloudTrail",
+      "Amazon CloudWatch Alarms",
+      "AWS Config Rules",
+      "Amazon EventBridge"
+    ],
+    correctAnswer: 1,
+    explanation: "CloudWatch Alarms is the correct choice for monitoring metrics and triggering actions based on thresholds. You can set alarms on any CloudWatch metric (like CPU utilization) with configurable periods and evaluation criteria. CloudTrail is for API logging, Config is for resource compliance, and EventBridge is for event-driven architectures (not metric monitoring).",
+    difficulty: "easy",
+    references: ["https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html"]
+  },
+  {
+    id: "q-monitoring-2",
+    domain: "Monitoring",
+    week: 2,
+    question: "A security team needs to analyze and troubleshoot application logs from multiple EC2 instances. They want to query logs using SQL-like syntax. Which CloudWatch feature should they use?",
+    options: [
+      "CloudWatch Metrics",
+      "CloudWatch Alarms",
+      "CloudWatch Logs Insights",
+      "CloudWatch Events"
+    ],
+    correctAnswer: 2,
+    explanation: "CloudWatch Logs Insights provides an interactive query language for analyzing log data using SQL-like syntax. You can search, filter, and aggregate log data across log groups. Metrics are for numerical data (not logs), Alarms are for notifications, and Events (now EventBridge) is for event routing.",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AnalyzingLogData.html"]
+  },
+  {
+    id: "q-monitoring-3",
+    domain: "Monitoring",
+    week: 2,
+    question: "Which AWS service provides a complete audit trail of all API calls made in your AWS account for compliance and security analysis?",
+    options: [
+      "Amazon CloudWatch Logs",
+      "AWS CloudTrail",
+      "AWS Config",
+      "VPC Flow Logs"
+    ],
+    correctAnswer: 1,
+    explanation: "AWS CloudTrail records all AWS API calls (who, what, when, where) and is the primary service for governance, compliance, and audit logging. CloudWatch Logs is for application logs, Config tracks resource configurations, and VPC Flow Logs capture network traffic (not API calls).",
+    difficulty: "easy",
+    references: ["https://aws.amazon.com/cloudtrail/"]
+  },
+  {
+    id: "q-monitoring-4",
+    domain: "Monitoring",
+    week: 2,
+    question: "A company needs to ensure all S3 buckets have encryption enabled and receive alerts for non-compliant resources. Which service combination is BEST?",
+    options: [
+      "CloudWatch Alarms + Lambda",
+      "AWS Config + SNS",
+      "CloudTrail + EventBridge",
+      "AWS Inspector + GuardDuty"
+    ],
+    correctAnswer: 1,
+    explanation: "AWS Config is designed for compliance monitoring with Config Rules that evaluate resource configurations. You can create a rule to check S3 bucket encryption and use SNS to send alerts for non-compliant resources. Config can also trigger automatic remediation. CloudWatch Alarms is for metrics (not compliance), CloudTrail is for API logging, and Inspector/GuardDuty are for security assessments.",
+    difficulty: "medium",
+    references: ["https://aws.amazon.com/config/"]
+  },
+
+  // VPC Advanced Networking Questions
+  {
+    id: "q-networking-4",
+    domain: "Networking",
+    week: 2,
+    question: "A company wants to access S3 from EC2 instances in a private subnet without traversing the internet. Which solution provides this with the LOWEST cost?",
+    options: [
+      "NAT Gateway",
+      "VPC Gateway Endpoint",
+      "VPC Interface Endpoint",
+      "AWS PrivateLink"
+    ],
+    correctAnswer: 1,
+    explanation: "VPC Gateway Endpoints for S3 (and DynamoDB) are FREE and provide private access without internet routing. You simply update route tables. NAT Gateway costs money and uses internet routing. Interface Endpoints cost money ($/hour + data transfer). PrivateLink is for custom services, not S3 direct access.",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html"]
+  },
+  {
+    id: "q-networking-5",
+    domain: "Networking",
+    week: 2,
+    question: "Which of the following AWS services require Interface VPC Endpoints (not Gateway Endpoints)? (Select TWO)",
+    options: [
+      "Amazon S3",
+      "Amazon DynamoDB",
+      "Amazon SNS",
+      "AWS Systems Manager",
+      "Amazon CloudWatch"
+    ],
+    correctAnswer: [2, 3],
+    multiSelect: true,
+    explanation: "Only S3 and DynamoDB support Gateway Endpoints (free, route table based). ALL other AWS services including SNS, Systems Manager, CloudWatch, etc. require Interface Endpoints (ENI-based, costs money). This is a critical exam distinction!",
+    difficulty: "hard",
+    references: ["https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html"]
+  },
+  {
+    id: "q-networking-6",
+    domain: "Networking",
+    week: 2,
+    question: "A company has 50 VPCs across multiple regions and wants to simplify their network architecture by creating a central connectivity hub. Which service should they use?",
+    options: [
+      "VPC Peering (full mesh)",
+      "AWS Transit Gateway",
+      "AWS Direct Connect",
+      "AWS PrivateLink"
+    ],
+    correctAnswer: 1,
+    explanation: "AWS Transit Gateway is designed as a central hub to connect thousands of VPCs and on-premises networks, replacing complex peering meshes. With 50 VPCs, a full mesh peering would require 1,225 peering connections (n*(n-1)/2). Transit Gateway supports cross-region peering. Direct Connect is for on-premises connectivity, and PrivateLink is for service exposure.",
+    difficulty: "medium",
+    references: ["https://aws.amazon.com/transit-gateway/"]
+  },
+  {
+    id: "q-networking-7",
+    domain: "Networking",
+    week: 2,
+    question: "What is captured by VPC Flow Logs?",
+    options: [
+      "Application-level HTTP requests and responses",
+      "DNS query logs for resources in the VPC",
+      "IP traffic information (source, destination, protocol, ports, action)",
+      "AWS API calls made within the VPC"
+    ],
+    correctAnswer: 2,
+    explanation: "VPC Flow Logs capture IP packet metadata: source/destination IPs, ports, protocol, number of packets, bytes, action (ACCEPT/REJECT), etc. They do NOT capture packet contents, HTTP-level data, DNS queries, or API calls. Use for troubleshooting connectivity issues and security analysis.",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html"]
+  },
+
+  // S3 Advanced Features Questions
+  {
+    id: "q-storage-7",
+    domain: "Storage",
+    week: 3,
+    question: "A company needs to replicate S3 objects to a different region for disaster recovery and compliance. Which S3 feature should they enable?",
+    options: [
+      "S3 Versioning",
+      "S3 Cross-Region Replication (CRR)",
+      "S3 Transfer Acceleration",
+      "S3 Lifecycle Policies"
+    ],
+    correctAnswer: 1,
+    explanation: "S3 Cross-Region Replication (CRR) automatically replicates objects across regions for disaster recovery, compliance, and lower latency access. Versioning is required to enable CRR but doesn't replicate by itself. Transfer Acceleration speeds uploads, and Lifecycle Policies manage object transitions (not replication).",
+    difficulty: "easy",
+    references: ["https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html"]
+  },
+  {
+    id: "q-storage-8",
+    domain: "Storage",
+    week: 3,
+    question: "Which S3 encryption option provides an audit trail of key usage in CloudTrail?",
+    options: [
+      "SSE-S3 (Server-Side Encryption with S3 managed keys)",
+      "SSE-KMS (Server-Side Encryption with AWS KMS)",
+      "SSE-C (Server-Side Encryption with Customer-provided keys)",
+      "Client-Side Encryption"
+    ],
+    correctAnswer: 1,
+    explanation: "SSE-KMS uses AWS KMS keys which provide CloudTrail logging of key usage (who accessed which key when). This is important for compliance and audit requirements. SSE-S3 uses AWS-managed keys without audit trails. SSE-C requires you to manage keys. Client-side encryption happens before upload (no AWS audit trail).",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingKMSEncryption.html"]
+  },
+  {
+    id: "q-storage-9",
+    domain: "Storage",
+    week: 3,
+    question: "A company wants to prevent accidental deletion of critical S3 objects. Which features should they implement? (Select TWO)",
+    options: [
+      "Enable S3 Versioning",
+      "Enable MFA Delete",
+      "Use S3 Glacier storage class",
+      "Enable S3 Transfer Acceleration",
+      "Use S3 Intelligent-Tiering"
+    ],
+    correctAnswer: [0, 1],
+    multiSelect: true,
+    explanation: "S3 Versioning preserves all versions of objects (deletes create a delete marker, recoverable). MFA Delete requires multi-factor authentication to permanently delete object versions or suspend versioning, adding extra protection. Glacier is a storage class (doesn't prevent deletion), Transfer Acceleration is for upload speed, and Intelligent-Tiering is for cost optimization.",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html"]
+  },
+  {
+    id: "q-storage-10",
+    domain: "Storage",
+    week: 3,
+    question: "A company stores log files in S3 that need to be kept for 7 years for compliance, but are rarely accessed after 90 days. What is the MOST cost-effective solution?",
+    options: [
+      "Store all files in S3 Standard",
+      "Use S3 Lifecycle policy to transition to S3 Glacier Flexible Retrieval after 90 days",
+      "Use S3 Lifecycle policy to transition to S3 Glacier Deep Archive after 90 days",
+      "Manually move files to S3 Glacier Deep Archive every quarter"
+    ],
+    correctAnswer: 2,
+    explanation: "S3 Glacier Deep Archive is the cheapest storage class and perfect for long-term archive (7 years) with rare access. Lifecycle policies automate the transition after 90 days. Glacier Flexible Retrieval is more expensive (use when retrieval time matters). S3 Standard is too expensive for rarely accessed data. Manual processes don't scale and are error-prone.",
+    difficulty: "hard",
+    references: ["https://aws.amazon.com/s3/storage-classes/"]
+  },
+
+  // Lambda Advanced Questions
+  {
+    id: "q-compute-6",
+    domain: "Compute",
+    week: 5,
+    question: "A Lambda function is being throttled with 429 errors during peak traffic. What is the MOST likely cause?",
+    options: [
+      "The function execution time exceeded 15 minutes",
+      "The function exceeded the regional concurrent execution limit",
+      "The function ran out of memory",
+      "The function's IAM role lacks permissions"
+    ],
+    correctAnswer: 1,
+    explanation: "429 errors (TooManyRequestsException) indicate throttling due to exceeding the concurrent execution limit (default 1000 per region). You can request a limit increase or use reserved concurrency. Timeout errors are different, memory errors return specific memory messages, and IAM errors return access denied (not 429).",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/lambda/latest/dg/lambda-concurrency.html"]
+  },
+  {
+    id: "q-compute-7",
+    domain: "Compute",
+    week: 5,
+    question: "A development team wants to share common libraries and dependencies across multiple Lambda functions without duplicating code. What should they use?",
+    options: [
+      "Lambda Layers",
+      "Lambda Aliases",
+      "Lambda Versions",
+      "Lambda Environment Variables"
+    ],
+    correctAnswer: 0,
+    explanation: "Lambda Layers allow you to package and share code, libraries, and dependencies across multiple functions. Each function can use up to 5 layers. Aliases and Versions are for deployment management, and Environment Variables are for configuration (not code sharing).",
+    difficulty: "easy",
+    references: ["https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html"]
+  },
+  {
+    id: "q-compute-8",
+    domain: "Compute",
+    week: 5,
+    question: "What is the primary difference between Lambda@Edge and CloudFront Functions?",
+    options: [
+      "Lambda@Edge runs in AWS regions, CloudFront Functions run at edge locations",
+      "Lambda@Edge supports more languages and has network access, CloudFront Functions are lighter and faster",
+      "Lambda@Edge is free, CloudFront Functions cost money",
+      "Lambda@Edge only works with S3, CloudFront Functions work with any origin"
+    ],
+    correctAnswer: 1,
+    explanation: "Lambda@Edge supports Node.js/Python with full network access and more compute (ms latency), suitable for complex operations. CloudFront Functions only support JavaScript, are ultra-lightweight with sub-millisecond latency, and are optimized for simple viewer request/response modifications. Both run at edge locations, both cost money, and both work with any CloudFront origin.",
+    difficulty: "hard",
+    references: ["https://aws.amazon.com/lambda/edge/"]
+  },
+
+  // CloudFront & Content Delivery Questions
+  {
+    id: "q-networking-8",
+    domain: "Networking",
+    week: 4,
+    question: "A company wants to distribute content globally with low latency and protect against DDoS attacks. Which service combination is BEST?",
+    options: [
+      "Amazon S3 + Transfer Acceleration",
+      "Amazon CloudFront + AWS Shield Standard",
+      "AWS Global Accelerator + ELB",
+      "Route 53 + Geolocation routing"
+    ],
+    correctAnswer: 1,
+    explanation: "CloudFront is AWS's CDN with 400+ edge locations for low-latency content delivery. Shield Standard (free) provides automatic DDoS protection and is integrated with CloudFront. Transfer Acceleration only speeds S3 uploads. Global Accelerator is for non-HTTP protocols and doesn't cache. Route 53 is DNS routing (not content delivery or DDoS protection).",
+    difficulty: "medium",
+    references: ["https://aws.amazon.com/cloudfront/"]
+  },
+  {
+    id: "q-networking-9",
+    domain: "Networking",
+    week: 4,
+    question: "When should you use AWS Global Accelerator instead of CloudFront?",
+    options: [
+      "When you need to cache static content",
+      "When you need static IP addresses and non-HTTP protocols (TCP/UDP)",
+      "When you want to reduce costs",
+      "When you only serve HTTP/HTTPS traffic"
+    ],
+    correctAnswer: 1,
+    explanation: "Use Global Accelerator when you need: 1) Static Anycast IP addresses, 2) Non-HTTP protocols (TCP/UDP), 3) Deterministic fast regional failover. CloudFront is for HTTP/HTTPS content delivery with caching. Global Accelerator doesn't cache and is more expensive than CloudFront but provides consistent IPs and works with any protocol.",
+    difficulty: "hard",
+    references: ["https://aws.amazon.com/global-accelerator/"]
+  },
+
+  // Security Services Questions
+  {
+    id: "q-security-6",
+    domain: "Security",
+    week: 4,
+    question: "Which AWS service uses machine learning to detect suspicious activity and potential security threats across AWS accounts?",
+    options: [
+      "AWS Config",
+      "Amazon GuardDuty",
+      "AWS CloudTrail",
+      "Amazon Inspector"
+    ],
+    correctAnswer: 1,
+    explanation: "Amazon GuardDuty is an intelligent threat detection service that uses ML to analyze CloudTrail, VPC Flow Logs, and DNS logs to identify malicious activity. It requires no agents and provides continuous monitoring. Config is for compliance, CloudTrail is for API logging, and Inspector is for vulnerability assessment (not threat detection).",
+    difficulty: "medium",
+    references: ["https://aws.amazon.com/guardduty/"]
+  },
+  {
+    id: "q-security-7",
+    domain: "Security",
+    week: 4,
+    question: "A company needs to automatically scan EC2 instances for software vulnerabilities and network exposure. Which service should they use?",
+    options: [
+      "Amazon GuardDuty",
+      "AWS Security Hub",
+      "Amazon Inspector",
+      "AWS Shield"
+    ],
+    correctAnswer: 2,
+    explanation: "Amazon Inspector performs automated security assessments including vulnerability scanning for EC2 instances, container images (ECR), and Lambda functions. It provides risk scores and remediation guidance. GuardDuty is for threat detection (not vulnerability scanning), Security Hub aggregates findings, and Shield is for DDoS protection.",
+    difficulty: "easy",
+    references: ["https://aws.amazon.com/inspector/"]
+  },
+  {
+    id: "q-security-8",
+    domain: "Security",
+    week: 3,
+    question: "A company wants to provision and automatically renew SSL/TLS certificates for their Application Load Balancer. Which service should they use?",
+    options: [
+      "AWS KMS",
+      "AWS Certificate Manager (ACM)",
+      "AWS Secrets Manager",
+      "AWS Systems Manager"
+    ],
+    correctAnswer: 1,
+    explanation: "AWS Certificate Manager (ACM) provides free public SSL/TLS certificates with automatic renewal for use with ELB, CloudFront, and API Gateway. KMS is for encryption keys, Secrets Manager is for secrets rotation, and Systems Manager is for operational management.",
+    difficulty: "easy",
+    references: ["https://aws.amazon.com/certificate-manager/"]
+  },
+
+  // Disaster Recovery Questions
+  {
+    id: "q-dr-1",
+    domain: "Disaster Recovery",
+    week: 6,
+    question: "A company needs a disaster recovery solution with RPO of 1 hour and RTO of 4 hours. Which DR strategy is MOST appropriate?",
+    options: [
+      "Backup and Restore",
+      "Pilot Light",
+      "Warm Standby",
+      "Multi-Site Active-Active"
+    ],
+    correctAnswer: 1,
+    explanation: "Pilot Light maintains minimal critical core running (database replication) with ability to quickly provision additional resources, providing moderate RPO/RTO (hours). Backup & Restore has higher RTO (hours to days). Warm Standby is faster but more expensive (minutes). Multi-Site is fastest (seconds/minutes) but most expensive. Pilot Light balances cost and recovery time for this requirement.",
+    difficulty: "hard",
+    references: ["https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/"]
+  },
+  {
+    id: "q-dr-2",
+    domain: "Disaster Recovery",
+    week: 6,
+    question: "Which AWS service provides centralized backup management across multiple AWS services with cross-region backup support?",
+    options: [
+      "AWS CloudFormation",
+      "AWS Backup",
+      "Amazon S3",
+      "AWS Storage Gateway"
+    ],
+    correctAnswer: 1,
+    explanation: "AWS Backup is a fully managed service that centralizes and automates backups across AWS services (EBS, RDS, Aurora, DynamoDB, EFS, FSx, etc.). It supports cross-region backup, backup vault lock (WORM), and compliance reporting. CloudFormation is for infrastructure as code, S3 is object storage, and Storage Gateway is for hybrid storage.",
+    difficulty: "easy",
+    references: ["https://aws.amazon.com/backup/"]
+  },
+
+  // Organizations & Governance Questions
+  {
+    id: "q-security-9",
+    domain: "Security",
+    week: 5,
+    question: "What is the primary purpose of Service Control Policies (SCPs) in AWS Organizations?",
+    options: [
+      "Grant permissions to IAM users and roles",
+      "Define maximum available permissions (guardrails) for accounts in an organization",
+      "Encrypt data across organizational accounts",
+      "Monitor compliance across multiple accounts"
+    ],
+    correctAnswer: 1,
+    explanation: "SCPs define permission boundaries (maximum available permissions) for all accounts in an Organizational Unit or Organization. They RESTRICT permissions but never GRANT them - you still need IAM policies to grant actual permissions. SCPs are guardrails to prevent accounts from doing prohibited actions. They don't handle encryption or monitoring.",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html"]
   }
 ];
 

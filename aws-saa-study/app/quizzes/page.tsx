@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Quiz from '@/components/Quiz';
 import QuizResults from '@/components/QuizResults';
-import { quizQuestions, quizDomains, getQuestionsByDomain, QuizQuestion, QuizAttempt } from '@/data/quizzes';
+import { quizQuestions as allQuizQuestions, quizDomains, getQuestionsByDomain, QuizQuestion, QuizAttempt } from '@/data/quizzes';
 
 export default function QuizzesPage() {
   const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
@@ -18,7 +18,7 @@ export default function QuizzesPage() {
 
   const handleStartQuiz = (domain: string) => {
     const questions = domain === 'all'
-      ? [...quizQuestions].sort(() => Math.random() - 0.5) // Shuffle all questions
+      ? [...allQuizQuestions].sort(() => Math.random() - 0.5) // Shuffle all questions
       : getQuestionsByDomain(domain);
 
     setQuizQuestions(questions);
@@ -94,7 +94,7 @@ export default function QuizzesPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center">
           <div className="text-4xl font-bold text-aws-orange mb-2">
-            {quizQuestions.length}
+            {allQuizQuestions.length}
           </div>
           <div className="text-gray-600 dark:text-gray-400">
             Total Questions
@@ -140,7 +140,7 @@ export default function QuizzesPage() {
               Practice with questions from all domains
             </p>
             <div className="text-aws-orange group-hover:text-white font-semibold">
-              {quizQuestions.length} questions
+              {allQuizQuestions.length} questions
             </div>
           </button>
 
