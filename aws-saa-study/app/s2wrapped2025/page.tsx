@@ -1,3 +1,5 @@
+'use client';
+
 export default function S2Wrapped2025() {
   return (
     <>
