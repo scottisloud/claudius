@@ -231,7 +231,7 @@ export default function Quiz({ questions, onComplete, domain }: QuizProps) {
                 }`}>
                   {isAnswerCorrect() ? 'Correct!' : 'Incorrect'}
                 </h3>
-                <p className={`${
+                <p className={`break-words ${
                   isAnswerCorrect() ? 'text-green-800 dark:text-green-200' : 'text-red-800 dark:text-red-200'
                 }`}>
                   {currentQuestion.explanation}
@@ -245,7 +245,7 @@ export default function Quiz({ questions, onComplete, domain }: QuizProps) {
                         href={ref}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sm text-aws-light-blue hover:underline block"
+                        className="text-sm text-aws-light-blue hover:underline block break-all"
                       >
                         {ref}
                       </a>
