@@ -1090,6 +1090,460 @@ export const quizQuestions: QuizQuestion[] = [
     explanation: "SCPs define permission boundaries (maximum available permissions) for all accounts in an Organizational Unit or Organization. They RESTRICT permissions but never GRANT them - you still need IAM policies to grant actual permissions. SCPs are guardrails to prevent accounts from doing prohibited actions. They don't handle encryption or monitoring.",
     difficulty: "medium",
     references: ["https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html"]
+  },
+
+  // API Gateway Questions
+  {
+    id: "q-integration-4",
+    domain: "Integration",
+    week: 2,
+    question: "What is the PRIMARY difference between API Gateway REST API and HTTP API?",
+    options: [
+      "REST API is newer and cheaper than HTTP API",
+      "HTTP API is newer, cheaper, and lower latency but has fewer features",
+      "REST API only supports HTTPS, HTTP API supports both HTTP and HTTPS",
+      "HTTP API only works with Lambda, REST API works with all backends"
+    ],
+    correctAnswer: 1,
+    explanation: "HTTP APIs are newer, up to 71% cheaper, and have lower latency than REST APIs, but offer fewer features. REST APIs support API keys, usage plans, request validation, caching - features HTTP APIs lack. Both support HTTPS (not plain HTTP) and both integrate with Lambda, HTTP backends, and AWS services. Choose HTTP API for simple, cost-effective APIs; REST API for full features.",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html"]
+  },
+  {
+    id: "q-integration-5",
+    domain: "Integration",
+    week: 2,
+    question: "A company's API Gateway is receiving too many requests from a single client and they want to limit the request rate. Which feature should they use?",
+    options: [
+      "API Gateway Caching",
+      "API Gateway Throttling",
+      "AWS WAF Rate Limiting",
+      "CloudFront Rate Limiting"
+    ],
+    correctAnswer: 1,
+    explanation: "API Gateway Throttling allows you to set rate limits (requests per second) and burst limits per API, stage, or method. Default limits are 10,000 requests per second and 5,000 burst. WAF can also rate limit but throttling is the native API Gateway feature. Caching improves performance but doesn't limit requests. CloudFront is for content delivery, not API rate limiting.",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-request-throttling.html"]
+  },
+  {
+    id: "q-integration-6",
+    domain: "Integration",
+    week: 2,
+    question: "What is the purpose of API Gateway Stages?",
+    options: [
+      "To separate different versions of your API (dev, staging, production)",
+      "To cache API responses",
+      "To authenticate API requests",
+      "To transform request/response data"
+    ],
+    correctAnswer: 0,
+    explanation: "API Gateway Stages are named references to a deployment, typically used for different environments (dev, test, prod). Each stage can have its own settings, throttling, caching, and stage variables. Stages allow you to manage multiple versions of your API simultaneously. Caching, authentication, and transformation are separate features available within stages.",
+    difficulty: "easy",
+    references: ["https://docs.aws.amazon.com/apigateway/latest/developerguide/stages.html"]
+  },
+
+  // Step Functions Questions
+  {
+    id: "q-integration-7",
+    domain: "Integration",
+    week: 5,
+    question: "Which Step Functions workflow type should you use for long-running workflows that can take up to 1 year to complete?",
+    options: [
+      "Express Workflows (Synchronous)",
+      "Express Workflows (Asynchronous)",
+      "Standard Workflows",
+      "Step Functions don't support workflows longer than 1 hour"
+    ],
+    correctAnswer: 2,
+    explanation: "Standard Workflows support long-running processes up to 1 year, with exactly-once execution and full execution history. Express Workflows are for high-volume, short-duration (<5 minutes) workloads with at-least-once execution. Express Synchronous waits for completion, Express Asynchronous doesn't wait. For long-running orchestration, always use Standard.",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/step-functions/latest/dg/concepts-standard-vs-express.html"]
+  },
+  {
+    id: "q-integration-8",
+    domain: "Integration",
+    week: 5,
+    question: "A Step Functions workflow needs to retry a failed Lambda function with exponential backoff. What should you configure?",
+    options: [
+      "Lambda Retry Configuration",
+      "Step Functions Retry Policy in the state definition",
+      "CloudWatch Events Retry Policy",
+      "SQS Dead Letter Queue"
+    ],
+    correctAnswer: 1,
+    explanation: "Step Functions supports built-in error handling with Retry and Catch fields in state definitions. Retry policies allow you to specify retry attempts, intervals, backoff rates, and which errors to retry. This is more powerful than Lambda's built-in retry (which is for async invocations). CloudWatch Events and SQS DLQ are separate error handling mechanisms.",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/step-functions/latest/dg/concepts-error-handling.html"]
+  },
+
+  // Cognito Questions
+  {
+    id: "q-security-10",
+    domain: "Security",
+    week: 3,
+    question: "What is the PRIMARY difference between Cognito User Pools and Cognito Identity Pools?",
+    options: [
+      "User Pools provide authentication (sign-in), Identity Pools provide authorization (AWS credentials)",
+      "User Pools are for mobile apps, Identity Pools are for web apps",
+      "User Pools store user data, Identity Pools store identity data",
+      "User Pools are free, Identity Pools cost money"
+    ],
+    correctAnswer: 0,
+    explanation: "User Pools handle AUTHENTICATION - user directories for sign-up/sign-in with features like MFA, social/enterprise federation, and return JWT tokens. Identity Pools handle AUTHORIZATION - provide temporary AWS credentials to access AWS services (S3, DynamoDB, etc.). They work together: User Pool authenticates, Identity Pool uses those tokens to grant AWS access. Both work with mobile/web apps and have usage-based pricing.",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html"]
+  },
+  {
+    id: "q-security-11",
+    domain: "Security",
+    week: 3,
+    question: "A mobile app needs to allow users to sign in with Google, Facebook, or email/password, then access their S3 bucket. Which Cognito setup is required?",
+    options: [
+      "User Pool only",
+      "Identity Pool only",
+      "User Pool + Identity Pool",
+      "Cognito Sync"
+    ],
+    correctAnswer: 2,
+    explanation: "This requires BOTH: User Pool for authentication (supports social identity providers like Google/Facebook AND email/password sign-in), then Identity Pool to exchange the User Pool JWT token for temporary AWS credentials to access S3. User Pool alone doesn't grant AWS access. Identity Pool alone doesn't handle social sign-in well. Cognito Sync is for data synchronization (deprecated).",
+    difficulty: "hard",
+    references: ["https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-scenarios.html"]
+  },
+
+  // DynamoDB Advanced Questions
+  {
+    id: "q-database-8",
+    domain: "Database",
+    week: 4,
+    question: "What is the PRIMARY difference between DynamoDB Global Secondary Index (GSI) and Local Secondary Index (LSI)?",
+    options: [
+      "GSI can have different partition and sort keys than the table; LSI must use the same partition key",
+      "GSI is global (multi-region), LSI is local (single region)",
+      "GSI costs money, LSI is free",
+      "GSI can be created anytime, LSI only at table creation time"
+    ],
+    correctAnswer: 0,
+    explanation: "GSI can have completely different partition and sort keys from the base table, while LSI MUST use the same partition key (only the sort key can differ). BOTH are in the same region (global doesn't mean multi-region). GSI can be created/deleted anytime; LSI must be created at table creation. Both consume additional WCU/RCU (not free). This is a critical exam distinction!",
+    difficulty: "hard",
+    references: ["https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/SecondaryIndexes.html"]
+  },
+  {
+    id: "q-database-9",
+    domain: "Database",
+    week: 4,
+    question: "A DynamoDB table is experiencing hot partition issues where one partition key is accessed much more frequently than others. What is the BEST solution?",
+    options: [
+      "Increase the table's provisioned throughput",
+      "Add a random suffix to the partition key to distribute load",
+      "Switch to On-Demand capacity mode",
+      "Enable DynamoDB Auto Scaling"
+    ],
+    correctAnswer: 1,
+    explanation: "Hot partition issues require fixing the partition key design. Adding a random suffix (or calculated suffix) distributes writes across multiple partitions. Just increasing throughput or using On-Demand doesn't solve the problem - one partition is still overloaded. Auto Scaling also won't help. The root cause is poor partition key design that concentrates traffic. Design partition keys for uniform distribution!",
+    difficulty: "hard",
+    references: ["https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-design.html"]
+  },
+  {
+    id: "q-database-10",
+    domain: "Database",
+    week: 4,
+    question: "How is one Read Capacity Unit (RCU) defined in DynamoDB?",
+    options: [
+      "One strongly consistent read per second for items up to 1 KB",
+      "One strongly consistent read per second for items up to 4 KB",
+      "Two eventually consistent reads per second for items up to 4 KB",
+      "One read per second regardless of item size"
+    ],
+    correctAnswer: 1,
+    explanation: "1 RCU = one strongly consistent read per second OR two eventually consistent reads per second, for items up to 4 KB. For larger items, divide size by 4 KB and round up. For example, a 6 KB item requires 2 RCUs (strongly consistent) or 1 RCU (eventually consistent). This calculation is frequently tested on the exam!",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProvisionedThroughput.html"]
+  },
+
+  // SQS Detailed Questions
+  {
+    id: "q-integration-9",
+    domain: "Integration",
+    week: 5,
+    question: "What is the purpose of SQS Visibility Timeout?",
+    options: [
+      "The time a message is visible in the queue before being deleted",
+      "The time a message is hidden from other consumers after being received, allowing processing without interference",
+      "The maximum time a message can stay in the queue",
+      "The time delay before a message becomes available"
+    ],
+    correctAnswer: 1,
+    explanation: "Visibility Timeout is the duration (0 sec to 12 hours, default 30 sec) that a message is hidden from other consumers after being retrieved. This prevents multiple consumers from processing the same message. If processing completes, delete the message. If processing fails, the message becomes visible again after timeout. Message retention (up to 14 days) is different. Delay queues have a separate delay setting.",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html"]
+  },
+  {
+    id: "q-integration-10",
+    domain: "Integration",
+    week: 5,
+    question: "What is the advantage of SQS Long Polling over Short Polling?",
+    options: [
+      "Long Polling is faster than Short Polling",
+      "Long Polling reduces cost and empty responses by waiting for messages to arrive",
+      "Long Polling supports FIFO queues, Short Polling does not",
+      "Long Polling has higher throughput than Short Polling"
+    ],
+    correctAnswer: 1,
+    explanation: "Long Polling (1-20 seconds wait time) reduces costs and eliminates empty responses by waiting for messages to arrive if the queue is empty. Short Polling returns immediately (even with empty responses), causing more API calls and higher costs. Both support Standard and FIFO queues. Long Polling is more efficient, not necessarily faster or higher throughput. Enable long polling by setting ReceiveMessageWaitTimeSeconds > 0.",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-short-and-long-polling.html"]
+  },
+
+  // Well-Architected Framework Questions
+  {
+    id: "q-architecture-1",
+    domain: "Architecture",
+    week: 6,
+    question: "Which pillar of the AWS Well-Architected Framework focuses on the ability to run and monitor systems to deliver business value?",
+    options: [
+      "Performance Efficiency",
+      "Operational Excellence",
+      "Reliability",
+      "Cost Optimization"
+    ],
+    correctAnswer: 1,
+    explanation: "Operational Excellence focuses on running and monitoring systems, performing operations as code, making frequent small changes, refining procedures, and anticipating failure. Performance Efficiency is about using resources efficiently. Reliability is about recovering from failures and meeting demand. Cost Optimization is about avoiding unnecessary costs. Know all 6 pillars for the exam!",
+    difficulty: "easy",
+    references: ["https://aws.amazon.com/architecture/well-architected/"]
+  },
+  {
+    id: "q-architecture-2",
+    domain: "Architecture",
+    week: 6,
+    question: "According to the AWS Well-Architected Framework Reliability pillar, which design principle helps you recover from failures?",
+    options: [
+      "Design for failure by implementing self-healing and automatic recovery",
+      "Use the largest instance types for better performance",
+      "Avoid using managed services to maintain control",
+      "Store all data in a single Availability Zone for consistency"
+    ],
+    correctAnswer: 0,
+    explanation: "The Reliability pillar emphasizes designing for failure - assume everything fails and design self-healing systems with automatic recovery. Use smaller, distributed resources across multiple AZs (not single large instances or single AZ). Leverage managed services when possible (they're designed for reliability). Key principles: test recovery procedures, automatically recover from failure, scale horizontally, manage change through automation.",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/"]
+  },
+  {
+    id: "q-architecture-3",
+    domain: "Architecture",
+    week: 6,
+    question: "Which of the following are pillars of the AWS Well-Architected Framework? (Select THREE)",
+    options: [
+      "Operational Excellence",
+      "Developer Productivity",
+      "Security",
+      "Cost Optimization",
+      "Innovation"
+    ],
+    correctAnswer: [0, 2, 3],
+    multiSelect: true,
+    explanation: "The 6 pillars are: 1) Operational Excellence, 2) Security, 3) Reliability, 4) Performance Efficiency, 5) Cost Optimization, 6) Sustainability. Developer Productivity and Innovation are not official pillars, though they may be outcomes of following the framework. Memorize all 6 pillars - this is frequently tested!",
+    difficulty: "easy",
+    references: ["https://aws.amazon.com/architecture/well-architected/"]
+  },
+
+  // CloudFormation Questions
+  {
+    id: "q-compute-9",
+    domain: "Compute",
+    week: 5,
+    question: "What is the purpose of CloudFormation Change Sets?",
+    options: [
+      "To automatically apply infrastructure changes",
+      "To preview how proposed changes will impact running resources before executing them",
+      "To roll back failed deployments",
+      "To version control CloudFormation templates"
+    ],
+    correctAnswer: 1,
+    explanation: "Change Sets allow you to preview how proposed changes will affect your running resources BEFORE executing them. You can see which resources will be modified, replaced, or deleted. This prevents accidental resource replacement or deletion. After reviewing, you can execute or discard the change set. Rollback is a separate feature. Version control is typically done with Git (not Change Sets).",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-changesets.html"]
+  },
+  {
+    id: "q-compute-10",
+    domain: "Compute",
+    week: 5,
+    question: "A company deployed infrastructure using CloudFormation but some resources were manually modified. How can they detect these manual changes?",
+    options: [
+      "CloudFormation Change Sets",
+      "CloudFormation Drift Detection",
+      "AWS Config Rules",
+      "CloudTrail Logs"
+    ],
+    correctAnswer: 1,
+    explanation: "CloudFormation Drift Detection identifies resources that have been modified outside of CloudFormation (manual changes via console/CLI). It compares actual resource configuration with the template. Change Sets preview planned changes (not detect drift). Config Rules check compliance. CloudTrail logs API calls but doesn't detect drift automatically. Run drift detection regularly to maintain IaC consistency!",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-stack-drift.html"]
+  },
+  {
+    id: "q-compute-11",
+    domain: "Compute",
+    week: 5,
+    question: "What happens when a CloudFormation stack creation fails?",
+    options: [
+      "All resources are kept in their current state for debugging",
+      "CloudFormation automatically rolls back and deletes all created resources by default",
+      "Failed resources are deleted but successful resources remain",
+      "The stack enters a failed state and cannot be modified"
+    ],
+    correctAnswer: 1,
+    explanation: "By default, CloudFormation performs automatic rollback on stack creation failure, deleting ALL resources that were successfully created. This ensures clean failure (no orphaned resources). You can disable rollback with --on-failure DO_NOTHING for debugging. For stack updates, failed resources remain but stack rolls back to previous working state. This \"all or nothing\" approach ensures consistency.",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stack-failure-options.html"]
+  },
+
+  // Anti-Pattern Questions
+  {
+    id: "q-antipattern-1",
+    domain: "Architecture",
+    week: 5,
+    question: "When should you NOT use AWS Lambda?",
+    options: [
+      "For event-driven, short-lived workloads with variable traffic",
+      "For long-running processes that take more than 15 minutes",
+      "For integrating with SQS, S3, and API Gateway",
+      "For sporadic, unpredictable workloads"
+    ],
+    correctAnswer: 1,
+    explanation: "DO NOT use Lambda for processes longer than 15 minutes (max execution time). Instead, use ECS, Fargate, or EC2. Also avoid Lambda for: stateful applications (use EC2 or store state externally), predictable constant workloads (EC2 may be cheaper), high-memory applications (>10 GB), or applications needing specialized hardware. Lambda excels at event-driven, variable, short-lived workloads!",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/lambda/latest/dg/lambda-intro-execution-role.html"]
+  },
+  {
+    id: "q-antipattern-2",
+    domain: "Storage",
+    week: 6,
+    question: "Which use case is NOT appropriate for Amazon S3?",
+    options: [
+      "Storing application logs and backups",
+      "Hosting static website content",
+      "Running a relational database with frequent updates",
+      "Storing data lake for analytics with Athena"
+    ],
+    correctAnswer: 2,
+    explanation: "DO NOT use S3 for databases or high-frequency updates (>100 updates/sec per object). S3 is object storage optimized for read-heavy workloads, not transactional databases. Use RDS/Aurora for relational databases, DynamoDB for NoSQL, or EBS for block storage. S3 is excellent for: static content, backups, logs, data lakes, archives, and infrequently updated data.",
+    difficulty: "easy",
+    references: ["https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html"]
+  },
+  {
+    id: "q-antipattern-3",
+    domain: "Database",
+    week: 4,
+    question: "A developer wants root access to their database server to install custom extensions. Which solution is NOT appropriate?",
+    options: [
+      "Amazon RDS",
+      "EC2 instance with self-managed database",
+      "Amazon Aurora",
+      "Amazon DocumentDB"
+    ],
+    correctAnswer: 0,
+    explanation: "RDS, Aurora, and DocumentDB are managed services with NO root access. If you need root/OS-level access, custom configurations, or unsupported extensions, use EC2 with a self-managed database. Trade-off: you handle patching, backups, scaling, and HA yourself. Managed services are better for most use cases - only use EC2 when you specifically need features unavailable in managed services.",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html"]
+  },
+
+  // Route 53 Advanced Questions
+  {
+    id: "q-networking-10",
+    domain: "Networking",
+    week: 2,
+    question: "A company wants to route traffic to different AWS regions based on user geographic location. Which Route 53 routing policy should they use?",
+    options: [
+      "Latency-based routing",
+      "Geolocation routing",
+      "Geoproximity routing",
+      "Weighted routing"
+    ],
+    correctAnswer: 1,
+    explanation: "Geolocation routing routes based on the geographic location of the REQUEST (where users are located) - perfect for region-specific content, language preferences, or compliance. Latency-based routes to the region with lowest latency (best performance). Geoproximity routes based on resource and user location with bias. Weighted routing distributes traffic by percentages. Choose geolocation for location-based content!",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-policy.html"]
+  },
+  {
+    id: "q-networking-11",
+    domain: "Networking",
+    week: 2,
+    question: "How do Route 53 health checks improve application availability?",
+    options: [
+      "They automatically scale resources based on traffic",
+      "They monitor endpoints and route traffic only to healthy resources",
+      "They cache DNS responses for faster lookups",
+      "They encrypt DNS queries for security"
+    ],
+    correctAnswer: 1,
+    explanation: "Route 53 health checks continuously monitor endpoints (every 30 sec or 10 sec) and only route traffic to healthy resources. Unhealthy resources are automatically removed from DNS responses. You can create health checks for endpoints, other health checks (calculated), and CloudWatch alarms. Combined with failover routing, this provides automatic disaster recovery. Health checks don't handle scaling, caching, or encryption.",
+    difficulty: "easy",
+    references: ["https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-failover.html"]
+  },
+  {
+    id: "q-networking-12",
+    domain: "Networking",
+    week: 2,
+    question: "What is the purpose of Route 53 Alias records?",
+    options: [
+      "To create custom DNS names for on-premises servers",
+      "To route traffic to AWS resources (ELB, CloudFront, S3) with no charge for queries",
+      "To create email routing rules",
+      "To implement DNS-based load balancing"
+    ],
+    correctAnswer: 1,
+    explanation: "Alias records are Route 53-specific extensions that route traffic to AWS resources (ELB, CloudFront, S3 website, API Gateway, etc.) and are FREE (no charge for queries). They provide native AWS integration, automatic updates when resource IPs change, and can be used at the zone apex (example.com). CNAME records can't be used at zone apex and incur query charges. Always use Alias for AWS resources!",
+    difficulty: "medium",
+    references: ["https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resource-record-sets-choosing-alias-non-alias.html"]
+  },
+
+  // VPN and Hybrid Networking Questions
+  {
+    id: "q-networking-13",
+    domain: "Networking",
+    week: 3,
+    question: "What is the PRIMARY difference between AWS Site-to-Site VPN and AWS Direct Connect?",
+    options: [
+      "VPN uses public internet with encryption, Direct Connect is a dedicated private connection",
+      "VPN is faster than Direct Connect",
+      "VPN costs more than Direct Connect",
+      "VPN supports higher bandwidth than Direct Connect"
+    ],
+    correctAnswer: 0,
+    explanation: "Site-to-Site VPN uses the public internet with IPsec encryption (quick setup, lower cost, variable performance). Direct Connect is a dedicated private network connection (1-100 Gbps, consistent performance, higher cost, takes weeks to provision). VPN is good for immediate connectivity or backup. Direct Connect is for consistent bandwidth, large data transfers, or hybrid architectures. Often used together for redundancy!",
+    difficulty: "medium",
+    references: ["https://aws.amazon.com/directconnect/"]
+  },
+  {
+    id: "q-networking-14",
+    domain: "Networking",
+    week: 3,
+    question: "A company needs to connect their on-premises data center to AWS with guaranteed bandwidth and low latency. Setup time is not urgent. Which solution is BEST?",
+    options: [
+      "AWS Site-to-Site VPN",
+      "AWS Direct Connect",
+      "AWS VPN CloudHub",
+      "VPC Peering"
+    ],
+    correctAnswer: 1,
+    explanation: "Direct Connect provides dedicated, private connectivity with guaranteed bandwidth, consistent low latency, and reduced data transfer costs. Setup takes weeks but provides the best performance. VPN uses public internet (variable performance, no guaranteed bandwidth). VPN CloudHub connects multiple remote sites. VPC Peering connects VPCs (not on-premises). Use Direct Connect for production hybrid workloads with high bandwidth needs.",
+    difficulty: "easy",
+    references: ["https://aws.amazon.com/directconnect/"]
+  },
+  {
+    id: "q-networking-15",
+    domain: "Networking",
+    week: 3,
+    question: "Which AWS service allows remote employees to securely connect to AWS resources using OpenVPN?",
+    options: [
+      "AWS Site-to-Site VPN",
+      "AWS Client VPN",
+      "AWS Direct Connect",
+      "AWS VPN CloudHub"
+    ],
+    correctAnswer: 1,
+    explanation: "AWS Client VPN is a managed client-based VPN service using OpenVPN, designed for remote users to access AWS and on-premises resources. Site-to-Site VPN connects entire networks (not individual users). Direct Connect is for dedicated on-premises connections. VPN CloudHub connects multiple remote sites together. Client VPN provides split-tunnel or full-tunnel with per-user authentication.",
+    difficulty: "easy",
+    references: ["https://docs.aws.amazon.com/vpn/latest/clientvpn-admin/"]
   }
 ];
 
