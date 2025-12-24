@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { QuizQuestion, QuizAttempt } from '@/data/quizzes';
+import { QuizQuestion, QuizAttempt } from '@/data/aws-saa/quizzes';
 
 interface QuizProps {
   questions: QuizQuestion[];

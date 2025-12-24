@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import Quiz from '@/components/Quiz';
-import QuizResults from '@/components/QuizResults';
-import { quizQuestions as allQuizQuestions, quizDomains, getQuestionsByDomain, QuizQuestion, QuizAttempt } from '@/data/quizzes';
+import Quiz from '@/components/aws-saa/Quiz';
+import QuizResults from '@/components/aws-saa/QuizResults';
+import { quizQuestions as allQuizQuestions, quizDomains, getQuestionsByDomain, QuizQuestion, QuizAttempt } from '@/data/aws-saa/quizzes';
 
 export default function QuizzesPage() {
   const [selectedDomain, setSelectedDomain] = useState<string | null>(null);

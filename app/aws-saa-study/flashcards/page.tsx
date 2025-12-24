@@ -2,8 +2,8 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Flashcard from '@/components/Flashcard';
-import { flashcards, categories } from '@/data/flashcards';
+import Flashcard from '@/components/aws-saa/Flashcard';
+import { flashcards, categories } from '@/data/aws-saa/flashcards';
 import Link from 'next/link';
 
 function FlashcardsContent() {

@@ -1,6 +1,6 @@
 'use client';
 
-import { QuizQuestion, QuizAttempt } from '@/data/quizzes';
+import { QuizQuestion, QuizAttempt } from '@/data/aws-saa/quizzes';
 import Link from 'next/link';
 
 interface QuizResultsProps {

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Flashcard as FlashcardType } from '@/data/flashcards';
+import { Flashcard as FlashcardType } from '@/data/aws-saa/flashcards';
 
 interface FlashcardProps {
   card: FlashcardType;

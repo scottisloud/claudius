@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import { flashcards, categories } from '@/data/flashcards';
-import { quizQuestions } from '@/data/quizzes';
+import { flashcards, categories } from '@/data/aws-saa/flashcards';
+import { quizQuestions } from '@/data/aws-saa/quizzes';
 
-export default function Home() {
+export default function AWSSAAHome() {
   return (
     <div className="max-w-6xl mx-auto">
       {/* Hero section */}
@@ -57,7 +57,7 @@ export default function Home() {
 
       {/* Quick actions */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-        <Link href="/flashcards" className="block group">
+        <Link href="/aws-saa-study/flashcards" className="block group">
           <div className="bg-gradient-to-br from-aws-light-blue to-aws-dark-blue rounded-xl shadow-lg p-8 text-white hover:shadow-2xl transition-all transform hover:-translate-y-1">
             <h3 className="text-2xl font-bold mb-3">📚 Study Flashcards</h3>
             <p className="text-white/80 mb-4">
@@ -69,7 +69,7 @@ export default function Home() {
           </div>
         </Link>
 
-        <Link href="/quizzes" className="block group">
+        <Link href="/aws-saa-study/quizzes" className="block group">
           <div className="bg-gradient-to-br from-aws-orange to-orange-600 rounded-xl shadow-lg p-8 text-white hover:shadow-2xl transition-all transform hover:-translate-y-1">
             <h3 className="text-2xl font-bold mb-3">🎯 Practice Quizzes</h3>
             <p className="text-white/80 mb-4">
@@ -93,7 +93,7 @@ export default function Home() {
             return (
               <Link
                 key={category}
-                href={`/flashcards?category=${encodeURIComponent(category)}`}
+                href={`/aws-saa-study/flashcards?category=${encodeURIComponent(category)}`}
                 className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-aws-orange hover:text-white transition-all text-center group"
               >
                 <div className="font-semibold mb-1">{category}</div>

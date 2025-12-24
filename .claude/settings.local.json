@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(tree:*)",
+      "Bash(wc:*)",
+      "Bash(git -C /Users/scottlougheed/Developer/claudius log --oneline -20)",
+      "Bash(npm run build:*)"
+    ]
+  }
+}
