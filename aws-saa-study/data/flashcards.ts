@@ -95,7 +95,7 @@ export const flashcards: Flashcard[] = [
     id: "fc-migration-7rs",
     category: "Migration",
     front: "7 Rs of Migration Strategy",
-    back: "1. Retire: Decommission\n2. Retain: Keep on-premises\n3. Relocate: VMware Cloud\n4. Rehost: Lift-and-shift\n5. Repurchase: Move to SaaS\n6. Replatform: Lift-tinker-shift\n7. Refactor: Re-architect",
+    back: "• Retire: Decommission\n• Retain: Keep on-premises\n• Relocate: VMware Cloud\n• Rehost: Lift-and-shift\n• Repurchase: Move to SaaS\n• Replatform: Lift-tinker-shift\n• Refactor: Re-architect",
     tags: ["migration", "strategy"],
     relatedServices: ["MGN", "DMS"]
   },
@@ -143,7 +143,7 @@ export const flashcards: Flashcard[] = [
     id: "fc-migration-comparison",
     category: "Migration",
     front: "Data Transfer Service Comparison",
-    back: "DataSync: One-time/scheduled, agent-based, 10x faster\nStorage Gateway: Ongoing hybrid, local caching\nTransfer Family: SFTP/FTP to S3, protocol compatibility\nSnow Family: Offline/bandwidth-limited, physical devices\nDirect Connect: Dedicated network connection",
+    back: "• DataSync: One-time/scheduled, agent-based, 10x faster\n• Storage Gateway: Ongoing hybrid, local caching\n• Transfer Family: SFTP/FTP to S3, protocol compatibility\n• Snow Family: Offline/bandwidth-limited, physical devices\n• Direct Connect: Dedicated network connection",
     tags: ["migration", "comparison", "transfer"],
     relatedServices: ["all-migration"]
   },
@@ -230,6 +230,54 @@ export const flashcards: Flashcard[] = [
     relatedServices: ["ElastiCache"]
   },
   {
+    id: "fc-database-rds-backups",
+    category: "Database",
+    front: "RDS Automated Backups vs Snapshots",
+    back: "Automated Backups:\n• Daily full backup + transaction logs\n• Point-in-time recovery (5-minute intervals)\n• Retention: 1-35 days (default 7)\n• Deleted when DB is deleted\n\nManual Snapshots:\n• User-initiated, stored in S3\n• Never expire (until manually deleted)\n• Persist after DB deletion\n• Can copy cross-region",
+    tags: ["database", "rds", "backup", "disaster-recovery"],
+    relatedServices: ["S3", "Aurora"]
+  },
+  {
+    id: "fc-database-rds-encryption",
+    category: "Database",
+    front: "RDS Encryption",
+    back: "At-rest encryption:\n• Uses AWS KMS\n• Must enable at creation time\n• Cannot encrypt existing unencrypted DB (must create new)\n• Snapshots are encrypted if source is encrypted\n\nIn-transit:\n• SSL/TLS available for all engines\n• Enforce with parameter groups\n\nRead replicas: Inherit encryption from primary",
+    tags: ["database", "rds", "encryption", "security"],
+    relatedServices: ["KMS"]
+  },
+  {
+    id: "fc-database-dynamodb-capacity",
+    category: "Database",
+    front: "DynamoDB Capacity Modes",
+    back: "On-Demand:\n• Pay per request\n• No capacity planning\n• Use: Unpredictable/spiky workloads\n• More expensive per request\n\nProvisioned:\n• Specify RCU/WCU\n• Auto-scaling available\n• Use: Predictable traffic\n• Reserved capacity for savings (1-3 years)",
+    tags: ["database", "dynamodb", "capacity", "pricing"],
+    relatedServices: ["DynamoDB"]
+  },
+  {
+    id: "fc-database-dax",
+    category: "Database",
+    front: "DynamoDB Accelerator (DAX)",
+    back: "In-memory cache for DynamoDB\n• Microsecond latency (vs milliseconds)\n• No application changes required (DynamoDB-compatible)\n• Write-through caching\n• 10x performance improvement\n• Use: Read-heavy workloads, gaming, real-time bidding\n• Not for strongly consistent reads from cache",
+    tags: ["database", "dynamodb", "cache", "performance"],
+    relatedServices: ["DynamoDB"]
+  },
+  {
+    id: "fc-database-rds-proxy",
+    category: "Database",
+    front: "Amazon RDS Proxy",
+    back: "Connection pool manager for RDS\n• Reduces connection overhead\n• Improves failover time (66% faster)\n• Enforces IAM authentication\n• Never publicly accessible (VPC only)\n• Use: Lambda to RDS, high connection churn\n• Supports: MySQL, PostgreSQL, Aurora",
+    tags: ["database", "rds", "proxy", "serverless"],
+    relatedServices: ["RDS", "Aurora", "Lambda"]
+  },
+  {
+    id: "fc-database-antipatterns",
+    category: "Database",
+    front: "RDS Anti-Patterns (When NOT to Use)",
+    back: "DON'T use RDS for:\n• Need root access → Use EC2 with database\n• Schema-less data → Use DynamoDB\n• Massive scale/throughput → Use DynamoDB\n• Temporary/scratch data → ElastiCache\n• Complex joins on huge datasets → Redshift\n• Blob/file storage → S3\n• Automated scaling to zero → Aurora Serverless v2",
+    tags: ["database", "rds", "anti-patterns"],
+    relatedServices: ["DynamoDB", "S3", "Redshift"]
+  },
+  {
     id: "fc-database-decision",
     category: "Database",
     front: "Database Selection Guide",
@@ -246,6 +294,14 @@ export const flashcards: Flashcard[] = [
     back: "Message queue (pull-based)\n• Standard: Unlimited throughput, at-least-once\n• FIFO: 300 msg/sec (3000 with batching), exactly-once\n• Message retention: 4 days default, up to 14 days\n• Use: Decouple application components",
     tags: ["integration", "queue", "messaging"],
     relatedServices: ["SNS", "Lambda"]
+  },
+  {
+    id: "fc-integration-sqs-dlq",
+    category: "Integration",
+    front: "SQS Dead Letter Queue (DLQ)",
+    back: "Queue for messages that fail processing\n• Set maximum receives (1-1000)\n• Failed messages moved to DLQ\n• Analyze failures without blocking main queue\n• DLQ must be same type (Standard/FIFO)\n• Set retention period longer than source queue\n• Use: Debugging, handling poison messages",
+    tags: ["integration", "sqs", "dead-letter-queue", "error-handling"],
+    relatedServices: ["SQS", "Lambda"]
   },
   {
     id: "fc-integration-sns",
@@ -267,7 +323,7 @@ export const flashcards: Flashcard[] = [
     id: "fc-integration-comparison",
     category: "Integration",
     front: "SQS vs SNS vs EventBridge",
-    back: "SQS: Pull-based, persistent, decouple/buffer\nSNS: Push-based, no persistence, fan-out\nEventBridge: Event-driven, content-based routing, SaaS\n\nCommon pattern: SNS → multiple SQS queues",
+    back: "• SQS: Pull-based, persistent, decouple/buffer\n• SNS: Push-based, no persistence, fan-out\n• EventBridge: Event-driven, content-based routing, SaaS\n\nCommon pattern: SNS → multiple SQS queues",
     tags: ["integration", "comparison"],
     relatedServices: ["SQS", "SNS", "EventBridge"]
   },
@@ -329,6 +385,62 @@ export const flashcards: Flashcard[] = [
     tags: ["compute", "paas", "managed"],
     relatedServices: ["EC2", "RDS"]
   },
+  {
+    id: "fc-compute-ec2-instance-metadata",
+    category: "Compute",
+    front: "EC2 Instance Metadata Service (IMDS)",
+    back: "Access instance information from within EC2\n• URL: http://169.254.169.254/latest/meta-data/\n• IMDSv1: Request/response (less secure)\n• IMDSv2: Session-oriented, token-based (recommended)\n• Access: IAM role credentials, instance ID, public IP\n• Use: Dynamic configuration, automation scripts",
+    tags: ["compute", "ec2", "metadata"],
+    relatedServices: ["IAM"]
+  },
+  {
+    id: "fc-compute-ec2-user-data",
+    category: "Compute",
+    front: "EC2 User Data",
+    back: "Bootstrap script for instance launch\n• Runs once at first boot (root user)\n• Use: Install software, configure settings\n• Max size: 16 KB\n• Can be retrieved via metadata service\n• Common use: Automated setup, configuration management",
+    tags: ["compute", "ec2", "automation"],
+    relatedServices: []
+  },
+  {
+    id: "fc-compute-ec2-placement-groups",
+    category: "Compute",
+    front: "EC2 Placement Groups",
+    back: "Control instance placement strategy:\n• Cluster: Low latency, same AZ (HPC)\n• Spread: Max 7 instances/AZ, different hardware (HA)\n• Partition: Divides instances into partitions, different racks (big data)\n\nUse:\n• Cluster: Big data jobs requiring low latency\n• Spread: Critical apps needing isolation\n• Partition: HDFS, Cassandra, Kafka",
+    tags: ["compute", "ec2", "placement", "performance"],
+    relatedServices: []
+  },
+  {
+    id: "fc-compute-ec2-elastic-ip",
+    category: "Compute",
+    front: "Elastic IP Addresses",
+    back: "Static public IPv4 address\n• Remains yours until you release it\n• Can remap to another instance quickly\n• Charged when NOT attached to running instance\n• Limit: 5 per region (can request increase)\n• Use: Mask instance failure, DNS failover\n• Anti-pattern: Use DNS (Route 53) instead if possible",
+    tags: ["compute", "ec2", "networking", "ip"],
+    relatedServices: ["Route 53"]
+  },
+  {
+    id: "fc-compute-ec2-instance-store",
+    category: "Compute",
+    front: "EC2 Instance Store vs EBS",
+    back: "Instance Store:\n• Ephemeral, physically attached\n• Lost on stop/termination\n• Very high IOPS (millions)\n• No additional cost\n• Use: Temporary data, caching, buffers\n\nEBS:\n• Persistent network storage\n• Survives stop/termination (if configured)\n• Use: Long-term data, databases",
+    tags: ["compute", "ec2", "storage"],
+    relatedServices: ["EBS"]
+  },
+  {
+    id: "fc-compute-auto-scaling-policies",
+    category: "Compute",
+    front: "Auto Scaling Policy Types",
+    back: "• Target Tracking: Maintain metric at target (e.g., 50% CPU)\n• Step Scaling: Scale based on CloudWatch alarm thresholds\n• Simple Scaling: Single adjustment (legacy)\n• Scheduled Scaling: Time-based (predictable patterns)\n• Predictive Scaling: ML-based forecasting\n\nRecommended: Target Tracking for most use cases",
+    tags: ["compute", "auto-scaling", "scaling"],
+    relatedServices: ["CloudWatch", "EC2"]
+  },
+  {
+    id: "fc-compute-batch",
+    category: "Compute",
+    front: "AWS Batch",
+    back: "Fully managed batch processing\n• Automatically provisions EC2/Spot instances\n• Job queues and scheduling\n• Docker container-based\n• Integrates with ECS\n• Use: Large-scale batch jobs, ETL, financial modeling\n• vs Lambda: For jobs >15 min or requiring dependencies\n• No additional charge (pay for resources)",
+    tags: ["compute", "batch", "containers"],
+    relatedServices: ["ECS", "EC2", "Spot"]
+  },
 
   // Storage Services
   {
@@ -370,6 +482,22 @@ export const flashcards: Flashcard[] = [
     back: "• FSx for Windows: SMB, Active Directory\n• FSx for Lustre: HPC, ML workloads, sub-ms latency\n• FSx for NetApp ONTAP: Multi-protocol (NFS, SMB)\n• FSx for OpenZFS: ZFS file system",
     tags: ["storage", "fsx"],
     relatedServices: ["S3", "EFS"]
+  },
+  {
+    id: "fc-storage-ebs-snapshots",
+    category: "Storage",
+    front: "EBS Snapshots",
+    back: "Point-in-time backups stored in S3\n• Incremental (only changed blocks)\n• Can copy cross-region/account\n• Create AMI from snapshot\n• Data Lifecycle Manager: Automate snapshot creation\n• Fast Snapshot Restore: No I/O latency on first access\n• Archive tier: 75% cheaper, 24-72h restore",
+    tags: ["storage", "ebs", "snapshots", "backup"],
+    relatedServices: ["S3", "EC2"]
+  },
+  {
+    id: "fc-storage-ebs-encryption",
+    category: "Storage",
+    front: "EBS Encryption",
+    back: "Encryption at rest and in transit\n• Uses AWS KMS\n• Can encrypt at creation or copy to encrypt\n• All snapshots encrypted if volume is encrypted\n• Minimal performance impact\n• Can enable encryption by default (account level)\n• Copy unencrypted snapshot → Create encrypted volume",
+    tags: ["storage", "ebs", "encryption", "security"],
+    relatedServices: ["KMS"]
   },
 
   // Networking
@@ -424,6 +552,30 @@ export const flashcards: Flashcard[] = [
     relatedServices: ["Organizations", "STS"]
   },
   {
+    id: "fc-security-iam-identities",
+    category: "Security",
+    front: "IAM Users vs Groups vs Roles",
+    back: "Users:\n• Long-term credentials (password/access keys)\n• Represents a person or service\n\nGroups:\n• Collection of users\n• Attach policies to groups (NOT roles)\n\nRoles:\n• Temporary credentials via STS\n• For AWS services, cross-account, federation\n• No long-term credentials",
+    tags: ["security", "iam", "identities"],
+    relatedServices: ["STS"]
+  },
+  {
+    id: "fc-security-iam-policy-structure",
+    category: "Security",
+    front: "IAM Policy Structure",
+    back: "JSON document with:\n• Effect: Allow or Deny\n• Action: API calls (e.g., s3:GetObject)\n• Resource: ARN of resource\n• Condition: Optional constraints\n\nTypes:\n• Identity-based: Attached to users/groups/roles\n• Resource-based: Attached to resources (S3, SQS)\n• Permission boundaries: Max permissions limit",
+    tags: ["security", "iam", "policies"],
+    relatedServices: []
+  },
+  {
+    id: "fc-security-sts",
+    category: "Security",
+    front: "AWS STS (Security Token Service)",
+    back: "Provides temporary security credentials\n• AssumeRole: Switch roles (cross-account, federation)\n• Valid for: 15 mins to 12 hours\n• Use cases: Cross-account access, federation, EC2 roles\n• More secure than long-term access keys",
+    tags: ["security", "sts", "temporary-credentials"],
+    relatedServices: ["IAM"]
+  },
+  {
     id: "fc-security-kms",
     category: "Security",
     front: "AWS KMS - Key Types",
@@ -463,6 +615,14 @@ export const flashcards: Flashcard[] = [
     front: "AWS Cost Management Tools",
     back: "• Cost Explorer: Visualize spending, forecast\n• AWS Budgets: Set alerts, prevent overages\n• Trusted Advisor: Optimization recommendations\n• Compute Optimizer: Right-sizing ML recommendations\n• Cost Allocation Tags: Track by project/team",
     tags: ["cost", "management", "tools"],
+    relatedServices: []
+  },
+  {
+    id: "fc-cost-trusted-advisor",
+    category: "Cost Optimization",
+    front: "AWS Trusted Advisor",
+    back: "Real-time best practice recommendations\n5 Categories:\n• Cost Optimization: Idle resources, RI recommendations\n• Performance: Service limits, throughput\n• Security: Open security groups, IAM use\n• Fault Tolerance: Multi-AZ, backups\n• Service Limits: Usage vs limits\n\nBasic/Developer: 7 core checks\nBusiness/Enterprise: All checks + API access",
+    tags: ["cost", "optimization", "trusted-advisor", "best-practices"],
     relatedServices: []
   },
   {
@@ -549,6 +709,14 @@ export const flashcards: Flashcard[] = [
     tags: ["networking", "vpc", "flow-logs", "monitoring"],
     relatedServices: ["CloudWatch", "S3"]
   },
+  {
+    id: "fc-network-vpn-types",
+    category: "Networking",
+    front: "AWS VPN: Site-to-Site vs Client VPN",
+    back: "Site-to-Site VPN:\n• Connect on-premises network to VPC\n• Uses Virtual Private Gateway or Transit Gateway\n• IPsec encrypted\n• Multiple connections for HA\n\nClient VPN:\n• Remote users connect to AWS/on-premises\n• OpenVPN-based\n• Managed service\n• Use: Remote workforce access",
+    tags: ["networking", "vpn", "hybrid"],
+    relatedServices: ["Direct Connect", "Transit Gateway"]
+  },
 
   // Advanced S3 Features
   {
@@ -583,6 +751,38 @@ export const flashcards: Flashcard[] = [
     tags: ["storage", "s3", "lifecycle", "cost-optimization"],
     relatedServices: ["S3"]
   },
+  {
+    id: "fc-storage-s3-security",
+    category: "Storage",
+    front: "S3 Security: Bucket Policies vs ACLs",
+    back: "Bucket Policies:\n• JSON-based, more flexible\n• Can grant cross-account access\n• Recommended approach\n\nACLs (Access Control Lists):\n• Legacy, less flexible\n• Object-level or bucket-level\n• AWS recommends disabling ACLs\n\nBlock Public Access:\n• Account or bucket-level settings\n• Override all other policies",
+    tags: ["storage", "s3", "security"],
+    relatedServices: ["IAM"]
+  },
+  {
+    id: "fc-storage-s3-presigned-urls",
+    category: "Storage",
+    front: "S3 Pre-signed URLs",
+    back: "Temporary access to private objects\n• Generated using your credentials\n• Expiration time (up to 12 hours with IAM user)\n• Use: Share private files temporarily\n• Common use: Upload/download without AWS credentials\n• Can be generated via SDK or CLI",
+    tags: ["storage", "s3", "security", "presigned-urls"],
+    relatedServices: ["CloudFront"]
+  },
+  {
+    id: "fc-storage-s3-transfer-acceleration",
+    category: "Storage",
+    front: "S3 Transfer Acceleration",
+    back: "Fast transfer over long distances\n• Uses CloudFront edge locations\n• Upload to edge → AWS backbone to S3\n• 50-500% faster for distant locations\n• Compatible with multipart upload\n• Pricing: Extra $0.04-0.08 per GB\n• Use: Global uploads, large files",
+    tags: ["storage", "s3", "performance", "transfer"],
+    relatedServices: ["CloudFront"]
+  },
+  {
+    id: "fc-storage-s3-antipatterns",
+    category: "Storage",
+    front: "S3 Anti-Patterns (When NOT to Use)",
+    back: "DON'T use S3 for:\n• High-frequency updates (>100 updates/sec) → DynamoDB\n• File system with POSIX permissions → EFS\n• Block storage for databases → EBS\n• Temporary storage for compute → Instance Store\n• Structured queries (use S3 + Athena instead)\n• Real-time data processing → Kinesis\n• Low-latency access (<10ms) → ElastiCache",
+    tags: ["storage", "s3", "anti-patterns"],
+    relatedServices: ["EFS", "EBS", "DynamoDB"]
+  },
 
   // Advanced Lambda Features
   {
@@ -608,6 +808,14 @@ export const flashcards: Flashcard[] = [
     back: "Lambda@Edge:\n• Node.js/Python, more compute, ms latency\n• CloudFront events, network access\n\nCloudFront Functions:\n• JavaScript, lightweight, sub-ms latency\n• Viewer request/response only\n\nBoth: Run at edge locations",
     tags: ["compute", "lambda", "cloudfront", "edge"],
     relatedServices: ["CloudFront"]
+  },
+  {
+    id: "fc-compute-lambda-antipatterns",
+    category: "Compute",
+    front: "Lambda Anti-Patterns (When NOT to Use)",
+    back: "DON'T use Lambda for:\n• Long-running processes (>15 min) → Use ECS/Batch\n• Stateful applications → Use EC2 or store state externally\n• High-memory applications (>10 GB) → Use EC2\n• Predictable, constant workload → EC2 may be cheaper\n• Complex dependencies (>250 MB) → Use containers/EC2\n• Applications requiring specialized hardware/GPUs",
+    tags: ["compute", "lambda", "anti-patterns", "serverless"],
+    relatedServices: ["EC2", "ECS", "Batch"]
   },
 
   // CloudFront & Content Delivery
@@ -667,8 +875,16 @@ export const flashcards: Flashcard[] = [
     id: "fc-dr-strategies",
     category: "Disaster Recovery",
     front: "Disaster Recovery Strategies",
-    back: "Order by RPO/RTO (fastest to slowest):\n1. Multi-Site/Hot Site: Active-active (lowest RTO)\n2. Warm Standby: Scaled-down active system\n3. Pilot Light: Minimal critical core\n4. Backup & Restore: Cheapest (highest RTO)\n\nRPO: Recovery Point Objective (data loss)\nRTO: Recovery Time Objective (downtime)",
+    back: "Order by RPO/RTO (fastest to slowest):\n• Multi-Site/Hot Site: Active-active, full capacity (lowest RTO/RPO)\n• Warm Standby: Scaled-down active system, always running\n• Pilot Light: Minimal critical core, ready to scale\n• Backup & Restore: Restore from backup (cheapest, highest RTO/RPO)",
     tags: ["disaster-recovery", "rpo", "rto", "availability"],
+    relatedServices: ["Backup", "S3"]
+  },
+  {
+    id: "fc-dr-rpo-rto",
+    category: "Disaster Recovery",
+    front: "RPO vs RTO",
+    back: "RPO (Recovery Point Objective):\n• How much data loss is acceptable?\n• Time between last backup and disaster\n• Example: 1-hour RPO = lose up to 1 hour of data\n\nRTO (Recovery Time Objective):\n• How much downtime is acceptable?\n• Time to restore operations\n• Example: 4-hour RTO = back online within 4 hours",
+    tags: ["disaster-recovery", "rpo", "rto"],
     relatedServices: ["Backup", "S3"]
   },
   {
@@ -678,6 +894,40 @@ export const flashcards: Flashcard[] = [
     back: "Centralized backup management\n• Backup Plans: Schedule, retention, lifecycle\n• Supports: EBS, RDS, Aurora, DynamoDB, EFS, FSx, more\n• Cross-region backup copy\n• Backup Vault Lock: WORM protection\n• Use: Compliance, centralized backup policy",
     tags: ["disaster-recovery", "backup", "compliance"],
     relatedServices: ["EBS", "RDS", "S3"]
+  },
+
+  // Application Services
+  {
+    id: "fc-app-cognito",
+    category: "Security",
+    front: "Amazon Cognito: User Pools vs Identity Pools",
+    back: "User Pools:\n• User directory for sign-up/sign-in\n• Social/enterprise identity federation\n• Returns JWT tokens\n• Use: Authentication\n\nIdentity Pools:\n• Provide AWS credentials (temporary)\n• Access AWS services directly\n• Can use User Pool tokens\n• Use: Authorization to AWS resources",
+    tags: ["security", "cognito", "authentication", "authorization"],
+    relatedServices: ["IAM", "API Gateway"]
+  },
+  {
+    id: "fc-app-cloudformation",
+    category: "Compute",
+    front: "AWS CloudFormation Basics",
+    back: "Infrastructure as Code (IaC)\n• Template: JSON/YAML definition\n• Stack: Deployed resources\n• Change Sets: Preview changes before apply\n• StackSets: Deploy across accounts/regions\n• Drift detection: Find manual changes\n• Rollback on failure\n• Free (pay for resources only)",
+    tags: ["compute", "cloudformation", "iac", "automation"],
+    relatedServices: []
+  },
+  {
+    id: "fc-app-well-architected",
+    category: "Compute",
+    front: "AWS Well-Architected Framework - 6 Pillars",
+    back: "1. Operational Excellence: Run/monitor systems\n2. Security: Protect information & systems\n3. Reliability: Recover from failures, meet demand\n4. Performance Efficiency: Use resources efficiently\n5. Cost Optimization: Avoid unnecessary costs\n6. Sustainability: Minimize environmental impact\n\nUse: Design decisions, architecture reviews",
+    tags: ["architecture", "best-practices", "framework"],
+    relatedServices: []
+  },
+  {
+    id: "fc-app-support-plans",
+    category: "Cost Optimization",
+    front: "AWS Support Plans",
+    back: "Basic (Free):\n• Customer service, forums, Trusted Advisor (7 checks)\n\nDeveloper ($29+):\n• Business hours email, 12-24h response\n\nBusiness ($100+):\n• 24/7 phone/chat, <1h for production down, full Trusted Advisor\n\nEnterprise ($15,000+):\n• TAM, <15min for critical, Concierge Support",
+    tags: ["support", "pricing", "management"],
+    relatedServices: ["Trusted Advisor"]
   },
 
   // Organizations & Governance
